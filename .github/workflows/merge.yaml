@@ -1,0 +1,13 @@
+name: Microservice Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-shared-workflow:
+    uses: Hitham07/source/blob/main/.github/workflows/shared.yaml@main
+    with:
+      example_input: 'some-value'
+
