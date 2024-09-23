@@ -7,7 +7,7 @@ on:
 
 jobs:
   call-shared-workflow:
-    uses: hitham07/source/main/.github/workflows/shared.yaml@main
+    uses: hitham07/source/.github/workflows/shared.yaml@main
     with:
       example_input: 'some-value'
 
