@@ -10,3 +10,4 @@ jobs:
     uses: hitham07/source/.github/workflows/shared.yaml@main
     with:
       example_input: 'some-value'
+      
