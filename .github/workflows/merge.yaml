@@ -5,9 +5,20 @@ on:
     branches:
       - main
 
+# jobs:
+#   call-shared-workflow:
+#     uses: hitham07/source/.github/workflows/shared.yaml@main
+#     with:
+#       example_input: 'some-value'
+ 
+
 jobs:
-  call-shared-workflow:
-    uses: hitham07/source/.github/workflows/shared.yaml@main
-    with:
-      example_input: 'some-value'
-      
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Run tests
+      run: |
+        mvn test
+        echo ${{ github.event }}
