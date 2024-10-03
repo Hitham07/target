@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: file-service-api-e2e
+  namespace: argo-cd
+spec:
+  destination:
+    name: in-cluster
+    namespace: file-service-api-e2e
+  project: default
+  source:
+    plugin:
+      name: argocd-vault-plugin-helm
+      env:
+        - name: ARGOCD_APP_NAME
+          value: file-service-api
+    path: app1
+    repoURL: 'https://github.com/Hitham07/target'
+    targetRevision: main
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 30s
+      limit: 20
