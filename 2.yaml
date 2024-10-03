@@ -3,24 +3,24 @@ kind: Application
 metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: app1
+  name: app2
   namespace: argo-cd
 spec:
   destination:
     name: in-cluster
-    namespace: app1
+    namespace: default
   project: default
   source:
     plugin:
-      name: avp-helm
+      name: avp
       env:
         - name: ARGOCD_APP_NAME
           value: app1
         - name: ARGOCD_APP_NAMESPACE  
-          value: demo
+          value: default
         - name: ARGOCD_ENV_HELM_ARGS
           value: "-f values.yaml" 
-    path: app1
+    path: app2
     repoURL: 'https://github.com/Hitham07/target'
     targetRevision: main
   syncPolicy:
