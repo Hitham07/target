@@ -19,7 +19,7 @@ spec:
         - name: ARGOCD_APP_NAMESPACE  
           value: demo
         - name: ARGOCD_ENV_HELM_ARGS
-          value: "-f values-test.yaml" 
+          value: --set image.tag=111111111111111111
     path: app1
     repoURL: 'https://github.com/Hitham07/target'
     targetRevision: main
