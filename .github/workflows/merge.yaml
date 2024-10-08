@@ -35,11 +35,10 @@ on:
 jobs:
   remove-environment:
     name: remove-environment
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
 
       - name: Get pull request ID
         run: |
           echo "test"
 
-          
