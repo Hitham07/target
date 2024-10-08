@@ -1,24 +1,43 @@
-name: Microservice Workflow
+# name: Microservice Workflow
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# # jobs:
+# #   call-shared-workflow:
+# #     uses: hitham07/source/.github/workflows/shared.yaml@main
+# #     with:
+# #       example_input: 'some-value'
+ 
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+
+#     - name: Run tests
+#       run: |
+#         echo 
+
+
+name: Add Pull Request Environment
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - main
 
-# jobs:
-#   call-shared-workflow:
-#     uses: hitham07/source/.github/workflows/shared.yaml@main
-#     with:
-#       example_input: 'some-value'
- 
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  remove-environment:
+    name: remove-environment
+    runs-on: self-hosted
     steps:
 
-    - name: Run tests
-      run: |
-        echo 
-
+      - name: Get pull request ID
+        run: |
+          echo "test"
