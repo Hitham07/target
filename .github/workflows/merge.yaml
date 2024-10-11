@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.TOK }}
 
       - name: Commit and push generated code
         run: |
@@ -32,6 +34,7 @@ jobs:
           repository: ${{ github.repository }}
           ref: master
           path: source_repo
+          token: ${{ secrets.TOK }}
 
       - name: test
         run: |
