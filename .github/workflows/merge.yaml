@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+<<<<<<< Updated upstream
+=======
+    paths:
+      - 'app2'
+>>>>>>> Stashed changes
 
 jobs:
   one:

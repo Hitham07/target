@@ -77,3 +77,4 @@ affinity: {}
 secrets:
   ## App Configuration
   APP_ENCRYPTION_PASSWORD: <path:kv-v2/data//service-api#APP_ENCRYPTION_PASSWORD>
+  
