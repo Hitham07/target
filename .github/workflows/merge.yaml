@@ -21,7 +21,7 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
-          echo "test11111" > test.txt
+          echo "test2222222" > test.txt
           git add .
           git commit --allow-empty -m "test"
           git push origin main
