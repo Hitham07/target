@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'app2'
+      - 'app2/**'
 
 jobs:
   one:
