@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  remove-environment:
-    name: remove-environment
+  one:
+    name: one
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
