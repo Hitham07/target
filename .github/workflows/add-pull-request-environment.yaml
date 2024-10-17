@@ -20,6 +20,11 @@ jobs:
           id=$(echo "${{ github.event.repository.name }}-${{ github.event.number }}-test" | sed 's/^kuberex-//; s/service/svc/')
           echo "ID=$id" >> $GITHUB_ENV
           echo "ID=$id" >> $GITHUB_OUTPUT
+
+      - name: Display SHA for Pull Requests
+        run: |
+          echo "The SHA for the pull request is: ${{ github.event.pull_request.head.sha }}"
+
   # deploy-pull-request-environment:
   #   needs: [ get-pull-request-environment-id ]
   #   uses: area99-ai/kuberex-workflows/.github/workflows/add-pull-request-environment-template.yaml@master
