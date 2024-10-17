@@ -20,7 +20,11 @@ jobs:
     steps:
       - name: print event
         run: |
-          echo ${{ github.event }}
+          echo ${{ github.event.pull_request }}
+
+      - name: print pull request number
+        run: |
+          echo ${{ github.event.pull_request.number }}
 
       - name: Get pull request environment ID
         id: set_environment_id
