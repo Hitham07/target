@@ -25,20 +25,10 @@ jobs:
       - name: Display SHA for Pull Requests
         run: |
           echo "The SHA for the pull request is: ${{ github.event.pull_request.head.sha }}"
-
-  extract-pr-number:
-    runs-on: ubuntu-latest
-    outputs:
-      pr_number: ${{ github.event.pull_request.number }}  # Set PR number as an output
-
-    steps:
-      - name: Set PR Number
-        run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-
           
   call-add-pr-environment:
     uses: ./.github/workflows/pull-request.yaml
+    needs: [get-pull-request-environment-id]
     # with:
-    #   pr_number: ${{ github.event.pull_request.number }}  # Pass the PR number
+    #   pr_number: ${{ github.event.pull_request.number }}  
     
