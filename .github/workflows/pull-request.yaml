@@ -23,7 +23,13 @@ jobs:
         run: |
           echo "Workflow Run Details:"
           echo "${{ toJson(github.event.workflow_run) }}"
-  
+
+      - name: Print pull_request Run Details
+        run: |
+          echo "pull_request Details:"
+          echo "${{ toJson(github.event.pull_request) }}"
+            
+
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
