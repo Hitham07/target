@@ -27,7 +27,6 @@ jobs:
         run: |
           echo "Pull Request Number: ${{ github.event.workflow_run.outputs.pr_number }}"
             
-
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
