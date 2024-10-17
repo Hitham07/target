@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Set PR Number
         run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"number }}"
+          echo "PR Number: ${{ github.event.pull_request.number }}"
 
           
   # deploy-pull-request-environment:
