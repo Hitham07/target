@@ -10,7 +10,7 @@ on:
 jobs:
   get-pull-request-environment-id:
     name: get-pull-request-environment-id
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
     steps:
