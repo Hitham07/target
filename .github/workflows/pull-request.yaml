@@ -9,7 +9,6 @@ on:
     workflows: ["Add Pull Request Environment"]
     types:
       - completed
-  
 jobs:
   get-pull-request-environment-id:
     name: get-pull-request-environment-id
@@ -24,10 +23,9 @@ jobs:
           echo "Workflow Run Details:"
           echo "${{ toJson(github.event.workflow_run) }}"
 
-      - name: Print pull_request Run Details
+      - name: Print Outputs
         run: |
-          echo "pull_request Details:"
-          echo "${{ toJson(github.event.pull_request) }}"
+          echo "Pull Request Number: ${{ github.event.workflow_run.outputs.pr_number }}"
             
 
       - name: Get pull request environment ID
