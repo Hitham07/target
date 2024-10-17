@@ -15,10 +15,6 @@ jobs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
     steps:
 
-      - name: print event content
-        run: |
-          echo ${{ github.event.pull_request.number }}
-
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
