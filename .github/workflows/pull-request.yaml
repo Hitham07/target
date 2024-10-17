@@ -18,21 +18,11 @@ jobs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
       SHA: ${{ env.SHA }}
     steps:
-      - name: print event
-        run: |
-          echo ${{ github.event.pull_request }}
 
-      - name: print pull request number
+      - name: Print Workflow Run Details
         run: |
-          echo ${{ github.event.pull_request.number }}
-
-      - name: print event content
-        run: |
-          echo "${{ github.event.workflow_run.event }}" 
-  
-      - name: print 
-        run: |
-          echo "${{ github.event.workflow_run.pull_requests.number }}"
+          echo "Workflow Run Details:"
+          echo "${{ toJson(github.event.workflow_run) }}"
   
       - name: Get pull request environment ID
         id: set_environment_id
