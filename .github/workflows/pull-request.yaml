@@ -9,7 +9,6 @@ on:
     workflows: ["Add Pull Request Environment"]
     types:
       - completed
-  
 jobs:
   get-pull-request-environment-id:
     name: get-pull-request-environment-id
