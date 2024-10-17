@@ -18,6 +18,14 @@ jobs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
       SHA: ${{ env.SHA }}
     steps:
+      - name: print event
+        run: |
+          echo ${{ github.event.pull_request }}
+
+      - name: print pull request number
+        run: |
+          echo ${{ github.event.pull_request.number }}
+
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
@@ -39,8 +47,6 @@ jobs:
           echo "The SHA from the completed workflow is: ${{ github.event.workflow_run.head_sha }}"
           echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
           echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
-
-
 
 
   display-GIT_SHA:
