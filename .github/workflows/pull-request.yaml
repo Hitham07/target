@@ -41,8 +41,6 @@ jobs:
           echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
 
 
-
-
   display-GIT_SHA:
     needs: [ get-pull-request-environment-id]
     runs-on: ubuntu-latest
