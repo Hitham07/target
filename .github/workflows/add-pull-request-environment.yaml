@@ -1,0 +1,29 @@
+name: Add Pull Request Environment
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches:
+      - master
+
+
+jobs:
+  get-pull-request-environment-id:
+    name: get-pull-request-environment-id
+    runs-on: self-hosted
+    outputs:
+      ID: ${{ steps.set_environment_id.outputs.ID }}
+    steps:
+      - name: Get pull request environment ID
+        id: set_environment_id
+        run: |
+          id=$(echo "${{ github.event.repository.name }}-${{ github.event.number }}-test" | sed 's/^kuberex-//; s/service/svc/')
+          echo "ID=$id" >> $GITHUB_ENV
+          echo "ID=$id" >> $GITHUB_OUTPUT
+  # deploy-pull-request-environment:
+  #   needs: [ get-pull-request-environment-id ]
+  #   uses: area99-ai/kuberex-workflows/.github/workflows/add-pull-request-environment-template.yaml@master
+  #   secrets: inherit # pragma: allowlist secret
+  #   with:
+  #     ENVIRONMENT_ID: ${{ needs.get-pull-request-environment-id.outputs.ID }}
+      

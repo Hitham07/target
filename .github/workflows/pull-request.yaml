@@ -1,0 +1,52 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    types: [synchronize]
+    branches:
+      - master
+  workflow_run:
+    workflows: ["Add Pull Request Environment"]
+    types:
+      - completed
+  
+jobs:
+  get-pull-request-environment-id:
+    name: get-pull-request-environment-id
+    runs-on: ubuntu-latest
+    outputs:
+      ID: ${{ steps.set_environment_id.outputs.ID }}
+      SHA: ${{ env.SHA }}
+    steps:
+      - name: Get pull request environment ID
+        id: set_environment_id
+        run: |
+          id=$(echo "${{ github.event.repository.name }}-${{ github.event.number }}-test" | sed 's/^kuberex-//; s/service/svc/')
+          echo "ID=$id" >> $GITHUB_ENV
+          echo "ID=$id" >> $GITHUB_OUTPUT
+
+      - name: Display SHA for Pull Requests
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "The SHA for the pull request is: ${{ github.event.pull_request.head.sha }}"
+          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+
+
+      - name: Display SHA from Workflow Run
+        if: github.event_name == 'workflow_run'
+        run: |
+          echo "The SHA from the completed workflow is: ${{ github.event.workflow_run.head_sha }}"
+          echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
+          echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+
+
+  # build-and-deploy:
+  #   needs: [verify-code, get-pull-request-environment-id]
+  #   uses: area99-ai/kuberex-workflows/.github/workflows/build-and-deploy-template.yaml@master
+  #   secrets: inherit # pragma: allowlist secret
+  #   with:
+  #     SERVICE_NAME: "user-service"
+  #     ENVIRONMENT_ID: ${{ needs.get-pull-request-environment-id.outputs.ID }}
+  #     GIT_SHA: ${{ needs.get-pull-request-environment-id.outputs.SHA }}
+
