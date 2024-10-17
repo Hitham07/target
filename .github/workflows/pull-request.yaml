@@ -42,12 +42,11 @@ jobs:
 
 
 
-  # build-and-deploy:
-  #   needs: [verify-code, get-pull-request-environment-id]
-  #   uses: area99-ai/kuberex-workflows/.github/workflows/build-and-deploy-template.yaml@master
-  #   secrets: inherit # pragma: allowlist secret
-  #   with:
-  #     SERVICE_NAME: "user-service"
-  #     ENVIRONMENT_ID: ${{ needs.get-pull-request-environment-id.outputs.ID }}
-  #     GIT_SHA: ${{ needs.get-pull-request-environment-id.outputs.SHA }}
 
+  display-GIT_SHA:
+    needs: [ get-pull-request-environment-id]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display SHA
+        run: |
+          echo "The SHA is: ${{ needs.get-pull-request-environment-id.outputs.SHA }}"
