@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [synchronize]
     branches:
-      - master
+      - main
   workflow_run:
     workflows: ["Add Pull Request Environment"]
     types:
