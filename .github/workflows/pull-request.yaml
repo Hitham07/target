@@ -18,6 +18,10 @@ jobs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
       SHA: ${{ env.SHA }}
     steps:
+      - name: print event
+        run: |
+          echo ${{ github.event }}
+
       - name: Get pull request environment ID
         id: set_environment_id
         run: |

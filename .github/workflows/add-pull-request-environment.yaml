@@ -14,6 +14,15 @@ jobs:
     outputs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
     steps:
+
+      - name: print event
+        run: |
+          echo ${{ github.event }}
+
+      - name: print context
+        run: |
+          echo ${{ github.context }}
+
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
