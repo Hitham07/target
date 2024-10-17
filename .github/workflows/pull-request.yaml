@@ -26,6 +26,15 @@ jobs:
         run: |
           echo ${{ github.event.pull_request.number }}
 
+      - name: print event content
+        run: |
+          echo "${{ github.event.workflow_run.event }}" 
+  
+      - name: print 
+        run: |
+          echo "${{ github.event.workflow_run.pull_requests.number }}"
+  
+
       - name: Get pull request environment ID
         id: set_environment_id
         run: |
