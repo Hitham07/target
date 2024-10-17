@@ -5,27 +5,16 @@ on:
     types: [synchronize]
     branches:
       - main
-  workflow_run:
-    workflows: ["Add Pull Request Environment"]
-    types:
-      - completed
+  workflow_call:
+    
 jobs:
   get-pull-request-environment-id:
     name: get-pull-request-environment-id
     runs-on: ubuntu-latest
     outputs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
-      SHA: ${{ env.SHA }}
     steps:
 
-      - name: Print Workflow Run Details
-        run: |
-          echo "Workflow Run Details:"
-          echo "${{ toJson(github.event.workflow_run) }}"
-
-      - name: Print Outputs
-        run: |
-          echo "Pull Request Number: ${{ github.event.workflow_run.outputs.pr_number }}"
             
       - name: Get pull request environment ID
         id: set_environment_id
@@ -34,21 +23,6 @@ jobs:
           echo "ID=$id" >> $GITHUB_ENV
           echo "ID=$id" >> $GITHUB_OUTPUT
 
-      - name: Display SHA for Pull Requests
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "The SHA for the pull request is: ${{ github.event.pull_request.head.sha }}"
-          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
-          echo "SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
-
-
-      - name: Display SHA from Workflow Run
-        if: github.event_name == 'workflow_run'
-        run: |
-          echo "The SHA from the completed workflow is: ${{ github.event.workflow_run.head_sha }}"
-          echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
-          echo "SHA=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
-
 
   display-GIT_SHA:
     needs: [ get-pull-request-environment-id]
@@ -56,4 +30,4 @@ jobs:
     steps:
       - name: Display SHA
         run: |
-          echo "The SHA is: ${{ needs.get-pull-request-environment-id.outputs.SHA }}"
+          echo "The SHA is: ${{ github.event.number }}"
