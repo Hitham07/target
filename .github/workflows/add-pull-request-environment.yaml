@@ -6,7 +6,7 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 
@@ -21,6 +21,6 @@ jobs:
     steps:
       - name: Get pull request environment ID
         run: |
-          echo ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+          echo ${{ github.workflow }}-${{ github.ref }}
           sleep 400
 
