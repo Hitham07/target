@@ -1,10 +1,15 @@
 name: Add Pull Request Environment
 
 on:
-  pull_request:
-    types: [opened, reopened]
+  push:
     branches:
       - main
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
 
 
 jobs:
@@ -14,32 +19,8 @@ jobs:
     outputs:
       ID: ${{ steps.set_environment_id.outputs.ID }}
     steps:
-
       - name: Get pull request environment ID
-        id: set_environment_id
         run: |
-          id=$(echo "${{ github.event.repository.name }}-${{ github.event.number }}-test" | sed 's/^kuberex-//; s/service/svc/')
-          echo "ID=$id" >> $GITHUB_ENV
-          echo "ID=$id" >> $GITHUB_OUTPUT
+          echo ${{ github.repository }}-${{ github.workflow }}-${{ github.ref }}
+          sleep 400
 
-      - name: Display SHA for Pull Requests
-        run: |
-          echo "The SHA for the pull request is: ${{ github.event.pull_request.head.sha }}"
-
-  extract-pr-number:
-    runs-on: ubuntu-latest
-    outputs:
-      pr_number: ${{ github.event.pull_request.number }}  # Set PR number as an output
-
-    steps:
-      - name: Set PR Number
-        run: |
-          echo "PR Number: ${{ github.event.pull_request.number }}"
-
-          
-  call-add-pr-environment:
-    uses: ./.github/workflows/pull-request.yml
-    # with:
-    #   pr_number: ${{ github.event.pull_request.number }}  # Pass the PR number
-      
-    
