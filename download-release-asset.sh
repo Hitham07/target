@@ -16,4 +16,4 @@ curl ${curl_custom_flags} \
 
 
 mkdir -p server1
-run: tar -xzvf /tmp/${asset_name} -C server1
+tar -xzvf /tmp/${asset_name} -C server1
