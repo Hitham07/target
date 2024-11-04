@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+message UserPermission  {
+  string route = 1;
+  bool allowed = 2;
+}
+
+message UserGroup {
+  string name = 1;
+  string uri = 2;
+}

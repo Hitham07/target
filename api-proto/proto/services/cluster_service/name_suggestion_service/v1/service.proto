@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package proto.services.name_suggestion_service.v1;
+
+// ExcludedNames names is the names used by organization before
+message ExcludedNames {
+  repeated string names = 1;
+  string organization_id = 2;
+}
+
+// Data used in parsed in by database to get the suggestions
+message Data {
+  AnimalInfo birds = 1;
+  AnimalInfo mammals = 2;
+  AnimalInfo fishes = 3;
+  AnimalInfo reptiles = 4;
+  AnimalInfo insects = 5;
+}
+
+message AnimalInfo {
+  string name = 1;
+  string scientific_name = 2;
+  string description = 3;
+}
+
+enum SuggestionType {
+  SUGGESTION_TYPE_UNSPECIFIED = 0;
+  SUGGESTION_TYPE_BIRD = 1;
+  SUGGESTION_TYPE_MAMMAL = 2;
+  SUGGESTION_TYPE_FISH = 3;
+  SUGGESTION_TYPE_REPTILE = 4;
+  SUGGESTION_TYPE_INSECT = 5;
+}
+
+message GetRandomSuggestionsRequest {
+}
+
+message Suggestion {
+  SuggestionType type = 1;
+  string suggestion = 2;
+  string scientific_name = 3;
+  string description = 4;
+  string google_search_url = 6;
+}
+
+message GetRandomSuggestionsResponse {
+  repeated Suggestion suggestions = 1;
+}
+
+message GetSuggestionsOfTypeRequest {
+  SuggestionType type = 1;
+  int64 count = 2;
+}
+
+message GetSuggestionsOfTypeResponse {
+  repeated Suggestion suggestions = 1;
+}
+
+service NameSuggestionService {
+  
+  // Retrieves name suggestions for cluster configurations it takes on of each type of animal
+  //    Request Metadata:
+  //        - authorization: Bearer token for authentication
+  //        - x-fingerprint: The fingerprint of the user
+  //        - x-organization-id: The organization id
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - FAILED_PRECONDITION -> 9: The x-organization-id is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetRandomSuggestions(GetRandomSuggestionsRequest) returns (GetRandomSuggestionsResponse);
+
+  // Retrieves name suggestions for cluster configurations it takes on of one type of animal
+  //    Request Metadata:
+  //        - authorization: Bearer token for authentication
+  //        - x-fingerprint: The fingerprint of the user
+  //        - x-organization-id: The organization id
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - FAILED_PRECONDITION -> 9: The x-organization-id is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetSuggestionsOfType(GetSuggestionsOfTypeRequest) returns (GetSuggestionsOfTypeResponse);
+}

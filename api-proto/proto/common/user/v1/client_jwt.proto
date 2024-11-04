@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "proto/common/user/v1/user.proto";
+import "proto/common/user/v1/user_acl.proto";
+
+message ClientJWT{
+  string sub = 1;
+  int64 exp = 2;
+  string session_id = 3;
+  proto.common.user.v1.UserInformation user_info = 4;
+  proto.common.user.v1.Identifier default_identifier = 5;
+  proto.common.user.v1.UserAccountStatus user_account_status = 6;
+  proto.common.user.v1.UserOrganizationDetails user_organization_details = 7;
+  repeated proto.common.user.v1.UserPermission permissions = 8;
+  repeated proto.common.user.v1.UserGroup group = 9;
+}

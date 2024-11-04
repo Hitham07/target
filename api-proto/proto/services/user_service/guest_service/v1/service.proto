@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package proto.services.guest_service.v1;
+
+import "google/protobuf/timestamp.proto";
+import "proto/common/device/v1/device.proto";
+import "proto/common/device/v1/location.proto";
+import "google/protobuf/empty.proto";
+
+//option go_package = "github.com/area99-ai/user-service/generated/proto/guest_service/v1;guest_service_v1";
+
+message GuestSession {
+    string fingerprint = 1;
+    string client_preferred_language = 2;
+    string ip_address = 3;
+    proto.common.device.v1.BrowserInformation browser = 4;
+    proto.common.device.v1.Location location = 5;
+    proto.common.device.v1.Address address = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+
+message InitiateGuestSessionRequest {
+    string client_preferred_language = 1;
+    proto.common.device.v1.DeviceCategory device_category = 2;
+    proto.common.device.v1.IpInformation ip_information = 3;
+    proto.common.device.v1.DeviceInformation device = 4;
+    proto.common.device.v1.BrowserInformation browser = 5;
+    proto.common.device.v1.OS operating_system = 6;
+    proto.common.device.v1.NetworkInformation network = 7;
+    proto.common.device.v1.Location location = 8;
+    proto.common.device.v1.Address address = 9;
+    proto.common.device.v1.ScreenInformation screen = 10;
+}
+
+
+message InitiateGuestSessionResponse {
+}
+
+message UpdatePreferredLanguageRequest {
+    string client_preferred_language = 1;
+}
+
+service GuestService {
+    // InitiateGuestSession is used to initiate a guest session for the user
+    //    Request Metadata:
+    //        - x-fingerprint: The fingerprint of the user
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //       - INTERNAL -> 13: The something went wrong in the server side
+    rpc InitiateGuestSession(InitiateGuestSessionRequest) returns (InitiateGuestSessionResponse);
+    // UpdatePreferredLanguage is used to update the preferred language of the guest session
+    //    Request Metadata:
+    //        - x-fingerprint: The fingerprint of the user
+    //    Response Metadata:
+    //       - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //       - INTERNAL -> 13: The something went wrong in the server side
+    rpc UpdatePreferredLanguage(UpdatePreferredLanguageRequest) returns (google.protobuf.Empty);
+}

@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package proto.common.image.v1;
+
+// Basic image information
+message ImageInfo {
+  int32 image_width = 1;
+  int32 image_length = 2; // Image height called Length by EXIF spec
+}
+
+// Image quality and format
+message ImageFormat {
+  int32 bits_per_sample = 1;
+  int32 compression = 2;
+  int32 photometric_interpretation = 3;
+  int32 orientation = 4;
+  int32 samples_per_pixel = 5;
+  int32 planar_configuration = 6;
+  string ycbcr_sub_sampling = 7;
+  string ycbcr_positioning = 8;
+}
+
+// Resolution and timing
+message ImageResolution {
+  float x_resolution = 1;
+  float y_resolution = 2;
+  int32 resolution_unit = 3;
+  string date_time = 4;
+}
+
+// Image description and metadata
+message ImageDescription {
+  string image_description = 1;
+  string make = 2;
+  string model = 3;
+  string software = 4;
+  string artist = 5;
+  string copyright = 6;
+}
+
+// EXIF and GPS
+message ExifGPSInfo {
+  int32 exif_ifd_pointer = 1;
+  int32 gps_info_ifd_pointer = 2;
+  int32 interoperability_ifd_pointer = 3;
+  string exif_version = 4;
+  string flashpix_version = 5;
+  string color_space = 6;
+}
+
+// Camera and exposure details
+message CameraExposure {
+  string components_configuration = 1;
+  int32 compressed_bits_per_pixel = 2;
+  int32 pixel_x_dimension = 3;
+  int32 pixel_y_dimension = 4;
+  string maker_note = 5;
+  string user_comment = 6;
+  string related_sound_file = 7;
+  string date_time_original = 8;
+  string date_time_digitized = 9;
+  string sub_sec_time = 10;
+  string sub_sec_time_original = 11;
+  string sub_sec_time_digitized = 12;
+  string image_unique_id = 13;
+  float exposure_time = 14;
+  float f_number = 15;
+  string exposure_program = 16;
+  string spectral_sensitivity = 17;
+  int32 iso_speed_ratings = 18;
+  string oecf = 19;
+  float shutter_speed_value = 20;
+  float aperture_value = 21;
+  float brightness_value = 22;
+  float exposure_bias_value = 23;
+  float max_aperture_value = 24;
+  float subject_distance = 25;
+  string metering_mode = 26;
+  string light_source = 27;
+  string flash = 28;
+  float focal_length = 29;
+}
+
+// Advanced camera settings
+message AdvancedCameraSettings {
+  string subject_area = 1;
+  float flash_energy = 2;
+  string spatial_frequency_response = 3;
+  float focal_plane_x_resolution = 4;
+  float focal_plane_y_resolution = 5;
+  int32 focal_plane_resolution_unit = 6;
+  string subject_location = 7;
+  float exposure_index = 8;
+  string sensing_method = 9;
+  string file_source = 10;
+  string scene_type = 11;
+  string cfa_pattern = 12;
+  string custom_rendered = 13;
+  string exposure_mode = 14;
+  string white_balance = 15;
+  float digital_zoom_ratio = 16;
+  float focal_length_in_35mm_film = 17;
+  string scene_capture_type = 18;
+  string gain_control = 19;
+  string contrast = 20;
+  string saturation = 21;
+  string sharpness = 22;
+  string device_setting_description = 23;
+  string subject_distance_range = 24;
+}
+
+// Lens details
+message LensInfo {
+  string lens_make = 1;
+  string lens_model = 2;
+}
+
+message ImageMetadata {
+  string user_id = 1;
+  string image_uri = 2;
+  ImageInfo info = 3;
+  ImageFormat format = 4;
+  ImageDescription description = 5;
+  ImageResolution resolution = 6;
+  AdvancedCameraSettings advanced_settings = 7;
+  LensInfo lens_info = 8;
+  CameraExposure exposure = 9;
+  ExifGPSInfo exif_gps = 10;
+}

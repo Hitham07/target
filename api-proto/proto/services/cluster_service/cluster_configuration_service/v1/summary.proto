@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "proto/services/cluster_service/cluster_configuration_service/v1/setup_strategy.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/vendor_configuration.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/tailored_settings.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/organize_and_launch.proto";
+import "proto/common/external_vendor/v1/vendor.proto";
+
+message GetClusterConfigurationSummaryRequest {
+    string session_id = 1;
+}
+
+message GetClusterConfigurationSummaryResponse {
+    ClusterPurpose cluster_purpose = 1;
+    CloudDistributionPolicy cloud_distribution_policy = 2;
+    proto.common.external_vendor.v1.VendorType vendor = 3;
+    ClusterScalability scalability = 4;
+    TargetDeployment target_deployment = 5;
+    ClusterEnvironmentSetup cluster_environment_setup = 6;
+    CloudCertificationPolicy cloud_certification_policy = 7;
+    repeated string data_sources_ids = 8;
+    string auditing_profile_id = 9;
+    repeated ComplianceOffering compliance_offerings = 10;
+    VendorConfiguration vendor_configuration = 11;
+    repeated string software_stacks_ids = 13;
+    ClusterNetworkType cluster_network_type = 14;
+    repeated string whitelisted_networks_ids = 15;
+    repeated string firewalls_ids = 16;
+    ClusterAccess cluster_access = 17;
+    optional string team_id = 18;
+    bool extended_availability = 21;
+    ResourceGrouping resource_grouping = 22;
+    optional string resource_pool_id = 23;
+    KubernetesVersion kubernetes_version = 24;
+    optional string jumper_server_id = 25;
+    string configuration_name = 26;
+    ShutdownScheduleOption shutdown_schedule_option = 27;
+    optional string shutdown_schedule_profile_id = 28;
+    optional ShutdownSchedule shutdown_schedule = 29;
+    optional string termination_routine_id = 30;
+}

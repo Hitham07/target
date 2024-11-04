@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+package proto.services.session_service.v1;
+
+import "proto/common/user/v1/session.proto";
+import "proto/common/device/v1/device.proto";
+import "proto/common/device/v1/location.proto";
+import "proto/common/user/v1/user.proto";
+
+message Session {
+  string csrf_token = 1;
+  int64 session_expiry_time = 2; //unixtime
+  bytes encryption_key = 3;
+}
+
+// InitiateSessionRequest initiates a session
+// check client fingerprint
+message InitiateSessionRequest {
+  proto.common.user.v1.SessionType session_type = 1;
+}
+
+// InitiateSignInSessionResponse sets signup_session_id in the cookies
+message InitiateSessionResponse {
+  Session session = 1;
+}
+
+message InitVerifySessionRequest {
+  proto.common.user.v1.BasicIdentifier identifier = 1;
+}
+
+message InitVerifySessionResponse {
+  Session session = 1;
+}
+
+message GetDeviceSessionsRequest{
+}
+
+message GetDeviceSessionsResponse{
+  repeated DeviceSessionInfo device_sessions = 1;
+}
+
+message DeviceSessionInfo {
+  proto.common.device.v1.Device device = 1;
+  proto.common.device.v1.BrowserInformation browser_info = 2;
+  bool is_current_device = 3; // check by fingerprint
+  int64 last_activated = 4; //unixtime
+  proto.common.device.v1.Location location = 5;
+  string ip_address = 6;
+}
+
+// it will remove all session for the device and from trusted device collection
+// it will not remove the device from the device collection
+message RemoveDeviceSessionRequest{
+  string device_id = 1;
+}
+
+message RemoveDeviceSessionResponse{
+}
+
+// Request to initiate password reset session
+message InitiatePasswordResetRequest {
+  proto.common.user.v1.BasicIdentifier identifier = 1;
+}
+
+// Response to initiate password reset session
+message InitiatePasswordResetResponse {
+}
+
+// Request to validate password reset token
+message ValidatePasswordResetTokenRequest {
+  string token = 1;
+}
+
+// Response to validate password reset token
+message ValidatePasswordResetTokenResponse {
+  Session session = 1;
+}
+
+// Request to initiate OTP session
+message InitiateOtpSessionRequest {
+  string user_id = 1;
+}
+
+// Response to initiate OTP session
+message InitiateOtpSessionResponse {
+  Session session = 1;
+}
+
+// SessionService is a service to handle sign in
+service SessionService {
+  //  InitiateSession initiates a session
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc InitiateSession(InitiateSessionRequest) returns (InitiateSessionResponse) {
+  }
+
+  // InitVerifySession initiates a session for verification
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - NOT_FOUND -> 5: The user is not found
+  rpc InitVerifySession(InitVerifySessionRequest) returns (InitVerifySessionResponse) {
+  }
+
+  // InitiatePasswordReset initiates a password reset session
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - NOT_FOUND -> 5: The user is not found
+  rpc InitiatePasswordReset(InitiatePasswordResetRequest) returns (InitiatePasswordResetResponse);
+
+  // InitiateOtpSession initiates an OTP session
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc InitiateOtpSession(InitiateOtpSessionRequest) returns (InitiateOtpSessionResponse);
+
+  //  ValidatePasswordResetToken validates the password reset token
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: The token is invalid
+  rpc ValidatePasswordResetToken(ValidatePasswordResetTokenRequest) returns (ValidatePasswordResetTokenResponse);
+
+  // GetDeviceSessions returns all the device sessions
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetDeviceSessions(GetDeviceSessionsRequest) returns (GetDeviceSessionsResponse) {
+  }
+
+  // RemoveDeviceSession removes the device session
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc RemoveDeviceSession(RemoveDeviceSessionRequest) returns (RemoveDeviceSessionResponse) {
+  }
+}

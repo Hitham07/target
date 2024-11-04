@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package proto.services.software_stack_service.v1;
+
+import "proto/services/cluster_service/cluster_configuration_service/v1/setup_strategy.proto";
+import "google/protobuf/timestamp.proto";
+
+message SoftwareStack {
+    string id = 1;
+    string name = 2;
+    string version = 3;
+    string description = 4;
+    repeated proto.services.cluster_configuration_service.v1.ClusterPurpose mandatory_for_cluster_purposes = 5;
+    repeated proto.services.cluster_configuration_service.v1.ClusterPurpose recommended_for_cluster_purposes = 6;
+    repeated Software software = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}
+
+message Software {
+    string id = 1;
+    string name = 2;
+    string version = 3;
+    string description = 4;
+}
+
+message GetSoftwareStackRequest {
+    string software_stack_id = 1;
+}
+
+message GetSoftwareStackResponse {
+    SoftwareStack software_stack = 1;
+}
+
+message ListSoftwareStacksRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListSoftwareStacksResponse {
+    repeated SoftwareStack software_stacks = 1;
+}
+
+service SoftwareStackService {
+
+    // Retrieves a software stack
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The software stack does not exist
+    rpc GetSoftwareStack(GetSoftwareStackRequest) returns (GetSoftwareStackResponse);
+
+    // Lists software stacks
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListSoftwareStacks(ListSoftwareStacksRequest) returns (ListSoftwareStacksResponse);
+}

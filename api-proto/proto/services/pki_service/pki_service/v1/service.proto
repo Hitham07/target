@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package proto.services.pki_service.v1;
+
+enum KeyType {
+    KEY_TYPE_RSA_UNSPECIFIED = 0;
+    KEY_TYPE_EDDSA = 1;
+}
+
+message KeyPair {
+    string id = 1;
+    KeyType key_type = 2;
+    bytes public_key = 3;
+    bytes private_key = 4;
+}
+
+message GetKeyPairRequest {
+    KeyType key_type = 1;
+}
+
+message GetKeyPairResponse {
+    KeyPair key_pair = 1;
+}
+
+message GetKeyPairByIdRequest {
+    string id = 1;
+}
+
+message GetKeyPairByIdResponse {
+    KeyPair key_pair = 1;
+}
+
+message ReleaseKeyPairRequest {
+    string id = 1;
+}
+
+service PKIService {
+    rpc GetKeyPair(GetKeyPairRequest) returns (GetKeyPairResponse);
+    rpc GetKeyPairById(GetKeyPairByIdRequest) returns (GetKeyPairByIdResponse);
+}

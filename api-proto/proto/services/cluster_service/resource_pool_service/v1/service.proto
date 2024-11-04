@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package proto.services.resource_pool_service.v1;
+
+import "proto/common/resource_pool/v1/resource_pool.proto";
+
+message GetResourcePoolRequest {
+    string resource_pool_id = 1;
+}
+
+message GetResourcePoolResponse {
+    proto.common.resource_pool.v1.ResourcePool resource_pool = 1;
+}
+
+message ListResourcePoolsRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListResourcePoolsResponse {
+    repeated proto.common.resource_pool.v1.ResourcePool resource_pools = 1;
+}
+
+service ResourcePoolService {
+
+    // Retrieves a resource pool
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The resource pool does not exist
+    rpc GetResourcePool(GetResourcePoolRequest) returns (GetResourcePoolResponse);
+    
+    // Lists resource pools
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListResourcePools(ListResourcePoolsRequest) returns (ListResourcePoolsResponse);
+}

@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package proto.common.external_vendor.hetzner.v1;
+
+message HetzenrConfiguration {}

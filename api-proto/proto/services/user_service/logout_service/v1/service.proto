@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package proto.services.logout_service.v1;
+
+message LogoutRequest {
+}
+
+message LogoutResponse {
+}
+
+service LogoutService {
+  //  Logout is a service that logs out the user from the system
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - DEADLINE_EXCEEDED -> 4: If user already logged out
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+  }
+}

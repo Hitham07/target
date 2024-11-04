@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto.services.concourse_service.v1;
+
+message CreateProjectRequest {
+    string organization_id = 1;
+    string main_network_name = 2;
+    string main_network_cidr = 3;
+    string network_zone = 4;
+    string private_domain = 5;
+    string loki_url = 6;
+    string machine_zone = 7;
+    string k8s_network_cidr = 8;
+    string instance_type = 9;
+}
+
+message DestroyProjectRequest {
+    string organization_id = 1;
+    string main_network_name = 2;
+    string main_network_cidr = 3;
+    string network_zone = 4;
+    string private_domain = 5;
+    string loki_url = 6;
+    string machine_zone = 7;
+    string k8s_network_cidr = 8;
+    string instance_type = 9;
+}

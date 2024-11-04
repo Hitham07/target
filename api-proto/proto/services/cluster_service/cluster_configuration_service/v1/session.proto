@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "proto/services/cluster_service/cluster_configuration_service/v1/setup_strategy.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/vendor_configuration.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/tailored_settings.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/organize_and_launch.proto";
+import "proto/common/external_vendor/gcp/v1/configuration.proto";
+import "proto/common/external_vendor/aws/v1/configuration.proto";
+import "proto/common/external_vendor/hetzner/v1/configuration.proto";
+import "proto/common/external_vendor/v1/vendor.proto";
+import "proto/common/session/v1/session.proto";
+
+
+message InitiateCreateClusterConfigurationSessionResponse {
+    string session_id = 1;
+    string csrf_token = 2;
+    proto.common.session.v1.ConfigurationStep next_step = 3;
+    int64 expiry_time = 4;
+}
+
+// This message represents the actual configuration that will be saved in the database.
+message ClusterConfigurationSession {
+    string session_id = 1;
+    string csrf_token = 2;
+    string fingerprint = 3;
+    int64 expiry_time = 4;
+    string organization_id = 5;
+    proto.common.session.v1.ConfigurationStep current_step = 6;
+    ClusterPurpose cluster_purpose = 7;
+    CloudDistributionPolicy cloud_distribution_policy = 8;
+    proto.common.external_vendor.v1.VendorType vendor = 9;
+    ClusterScalability scalability = 10;
+    TargetDeployment target_deployment = 11;
+    ClusterEnvironmentSetup cluster_environment_setup = 12;
+    CloudCertificationPolicy cloud_certification_policy = 13;
+    repeated string data_sources_ids = 14;
+    string auditing_profile_id = 15;
+    repeated ComplianceOffering compliance_offerings = 16;
+    optional proto.common.external_vendor.gcp.v1.GCPConfiguration gcp_cluster_configuration = 17;
+    optional proto.common.external_vendor.aws.v1.AWSConfiguration aws_cluster_configuration = 18;
+    optional proto.common.external_vendor.hetzner.v1.HetzenrConfiguration hetzner_cluster_configuration = 19;
+    optional HybridClusterConfiguration hybrid_cluster_configuration = 20;
+    repeated string software_stacks_ids = 21;
+    ClusterNetworkType cluster_network_type = 22;
+    repeated string whitelisted_networks_ids = 23;
+    repeated string firewalls_ids = 24;
+    ClusterAccess cluster_access = 25;
+    optional string team_id = 26;
+    bool extended_availability = 27;
+    ResourceGrouping resource_grouping = 28;
+    optional string resource_pool_id = 29;
+    KubernetesVersion kubernetes_version = 30;
+    optional string jumper_server_id = 31;
+    string configuration_name = 32;
+    ShutdownScheduleOption shutdown_schedule_option = 33;
+    optional string shutdown_schedule_profile_id = 34;
+    optional ShutdownSchedule shutdown_schedule = 35;
+    optional string termination_routine_id = 36;
+    string saved_configuration_id = 37;
+    repeated string saved_recommendation_ids = 38;
+    // Add the reset of the configuration...
+}

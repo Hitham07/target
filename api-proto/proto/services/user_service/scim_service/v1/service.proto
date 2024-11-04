@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package proto.services.scim_service.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "proto/common/user/v1/scim.proto";
+
+message Name {
+    string formatted = 1;
+    string family_name = 2;
+    string given_name = 3;
+}
+
+message Email {
+    string value = 1;
+    string type = 2;
+    bool primary = 3;
+}
+
+message Group {
+    string value = 1;
+    string display = 2;
+    string type = 3;
+}
+
+message CreateUserRequest {
+    repeated string schemas = 1;
+    string external_id = 2;
+    string user_name = 3;
+    Name name = 4;
+    bool active = 5;
+    string password = 6;
+    repeated Email emails = 7;
+}
+
+message CreateUserResponse {
+    repeated string schemas = 1;
+    string id = 2;
+    proto.common.user.v1.Meta meta = 3;
+    string user_name = 4;
+    Name name = 5;
+    string external_id = 6;
+    bool active = 7;
+    repeated Email emails = 8;
+    repeated Group groups = 9;
+}
+
+message GetSchemasResponse {
+    int32 total_results = 1;
+    int32 items_per_page = 2;
+    int32 start_index = 3;
+    repeated string schemas = 4;
+    proto.common.user.v1.Resource resource = 5;
+}
+
+message GetSchemaRequest {
+    string id = 1;
+}
+
+message GetSchemaResponse {
+    repeated string schemas = 1;
+    string id = 2;
+    proto.common.user.v1.Meta meta = 3;
+    string name = 4;
+    repeated proto.common.user.v1.Attribute attributes = 5;
+}
+
+message TokenRequestRequest {
+    string organization_id = 1;
+}
+
+message TokenRequestResponse {
+    string token = 1;
+}
+
+service SCIMService {
+    // TokenRequest is used to request a token for the SCIM service.
+    //    Request Metadata:
+    //        - x-fingerprint: The fingerprint of the user
+    //        - authorization: The JWT token of the user
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - INVALID_ARGUMENT -> 3: The user is not admin of the organization to invite a user
+    //        - PERMISSION_DENIED -> 7: The user is not part of the organization
+    rpc TokenRequest(TokenRequestRequest) returns (TokenRequestResponse);
+
+    // CreateUser is used to create a user in the SCIM service.
+    //    Request Metadata:
+    //        - authorization: The token of the user
+    //    Success Response Status Code:
+    //        - 201: The user was created successfully
+    //    Possible http errors:
+    //       - 400: The request is invalid
+    //       - 500: The server failed to process the request
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/scim/Users"
+            body: "*"
+        };
+    }
+
+    // GetSchemas is used to get the schemas of the SCIM service.
+    // Public API
+    rpc GetSchemas(google.protobuf.Empty) returns (GetSchemasResponse) {
+        option (google.api.http) = {
+            get: "/v1/scim/Schemas"
+        };
+    }
+
+    // GetSchema is used to get specific schema of the SCIM service.
+    // Public API
+    rpc GetSchema(GetSchemaRequest) returns (GetSchemaResponse) {
+        option (google.api.http) = {
+            get: "/v1/scim/Schemas/{id}"
+        };
+    }
+}

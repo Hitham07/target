@@ -15,5 +15,5 @@ curl ${curl_custom_flags} \
         "${GITHUB_API_BASE_URL}/repos/${org}/${repo}/releases/assets/${asset_id}" -o "/tmp/${asset_name}"
 
 
-mkdir -p server1
-tar -xzvf /tmp/${asset_name} -C server1
+mkdir -p pki_service
+tar -xzvf /tmp/${asset_name} -C pki_service

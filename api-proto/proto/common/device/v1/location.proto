@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto.common.device.v1;
+
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+}
+
+message Address {
+  string street = 1;
+  string house_number = 2;
+  string city = 3;
+  string state = 4;
+  string zip_code = 5;
+  string country = 6;
+}

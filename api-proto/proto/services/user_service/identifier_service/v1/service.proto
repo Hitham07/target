@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto.services.identifier_service.v1;
+
+//import "proto/common/user/v1/user.proto";
+
+message VerifyIdentifierRequest {
+  string code = 1;
+}
+
+message VerifyIdentifierResponse {
+}
+
+service IdentifierService {
+  // VerifyIdentifier is used to verify the identifier of the user
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  //       - INVALID_ARGUMENT -> 3: The code is invalid
+  //       - DEADLINE_EXCEEDED -> 4: The request took too long to process
+  rpc VerifyIdentifier(VerifyIdentifierRequest) returns (VerifyIdentifierResponse) {
+  }
+}

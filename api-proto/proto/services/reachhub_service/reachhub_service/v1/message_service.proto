@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package proto.services.reachhub_service.v1;
+
+import "proto/services/reachhub_service/reachhub_service/v1/user.proto";
+
+message Common{
+    UserInformation user_info = 1;
+    BasicIdentifier identifier = 2;
+    string client_preferred_language = 3;
+}
+
+enum MessageType {
+    MESSAGE_TYPE_EMAIL_UNSPECIFIED = 0;
+    MESSAGE_TYPE_EMAIL_SMS = 1;
+}
+
+message ContentValue {
+    repeated string value = 1;
+}
+
+message Content {
+//    map of any type of content
+    map<string, ContentValue> content = 1;
+}
+
+enum AttachmentType {
+    ATTACHMENT_TYPE_UNSPECIFIED = 0;
+    ATTACHMENT_TYPE_PDF = 1;
+    ATTACHMENT_TYPE_IMAGE = 2;
+    ATTACHMENT_TYPE_DOCUMENT = 4;
+    ATTACHMENT_TYPE_OTHER = 5;
+}
+
+message Attachment {
+    AttachmentType type = 1;
+    string attachment_url = 2;
+}
+
+message Message {
+    MessageType message_type = 1;
+    repeated Attachment attachment = 2;
+    Common common = 3;
+    repeated Content content = 4;
+}

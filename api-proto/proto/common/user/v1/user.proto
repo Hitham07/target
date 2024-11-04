@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// UserAccountStatus is checked everytime we need to send a communication to the user
+message UserAccountStatus {
+  google.protobuf.Int64Value attempt_count = 1;
+  google.protobuf.BoolValue activity_delayed = 2;
+  google.protobuf.Int64Value next_delay_time = 3; // in unix time
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message UserAgreement {
+  string agreement_id = 1;
+  float agreement_version = 2;
+  google.protobuf.Timestamp agreed_at = 3;
+}
+
+message User {
+  string public_id = 1;
+  Identifier default_identifier = 2;
+  repeated Identifier identifier = 3;
+  UserInformation information = 4;
+  UserSecurityCredentials security_credentials = 5;
+  UserAccountStatus account_status = 6;
+  UserOrganizationDetails user_org_details = 7;
+  UserAccountDetails account_details = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+  ProfessionalDetails professional_details = 11;
+  UserAgreement agreement = 12;
+  bool requires_password_reset = 13;
+  ScimDetails scim_details = 14;
+}
+
+message ScimDetails {
+  string external_id = 1;
+  repeated string schemas = 2;
+  string user_name = 3;
+}
+
+message UserSecurityCredentials {
+  string password = 2;
+}
+
+message Identifier {
+  IdentifierType identifier_type = 1;
+  string identifier = 2;
+  bool is_verified = 3;
+}
+
+// for sign up and sign in process
+message BasicIdentifier {
+  IdentifierType identifier_type = 1;
+  string identifier = 2;
+}
+
+enum IdentifierType {
+  IDENTIFIER_TYPE_UNSPECIFIED = 0;
+  IDENTIFIER_TYPE_EMAIL = 1;
+  IDENTIFIER_TYPE_MOBILE_NUMBER = 2;
+}
+
+message UserInformation{
+  string first_name = 1;
+  string last_name = 2;
+  string preferred_name = 5;
+  Title title = 3;
+  string country = 4;
+  AlternativeName alternative_names = 6;
+  // this ids are inside the bucket inside user id directory request from file service to get the image
+  ProfilePicture profile_picture = 7;
+}
+
+message ProfilePicture {
+  string original_profile_picture_id = 1;
+  string thumbnail_profile_picture_id = 2;
+  string cropped_profile_picture_id = 3;
+}
+
+message UserAccountDetails {
+  bool is_active = 1;
+  bool is_deleted = 2;
+  bool is_suspended = 3;
+  bool is_verified = 4;
+  bool is_two_factor_enabled = 5;
+  google.protobuf.Timestamp verification_date = 6;
+}
+
+message AlternativeName {
+  string name = 1;
+  Language language = 2;
+}
+
+enum Language {
+  LANGUAGE_UNSPECIFIED = 0;
+  LANGUAGE_ENGLISH = 1;
+  LANGUAGE_ARABIC = 2;
+  LANGUAGE_GERMAN = 3;
+  LANGUAGE_FRENCH = 4;
+  LANGUAGE_MANDARIN = 5;
+  LANGUAGE_JAPANESE = 6;
+}
+
+enum Title {
+  TITLE_UNSPECIFIED = 0;
+  TITLE_MR = 1;
+  TITLE_MRS = 2;
+  TITLE_MS = 3;
+  TITLE_DR = 4;
+  TITLE_PROF = 5;
+}
+
+message UserOrganizationDetails {
+  repeated string user_owned_org_id = 1;
+  repeated string member_id = 2;
+  string last_selected_org_id = 3;
+}
+
+message ProfessionalDetails {
+  repeated Interest interests = 1;
+  EmploymentType employment_type = 2;
+  WorkMode work_mode = 3;
+  JobFunction job_function = 4;
+  string company_name = 5;
+  string job_title = 6;
+  string website = 7;
+  string linkedin_profile = 8;
+  string github_profile = 9;
+}
+
+enum JobFunction {
+  JOB_FUNCTION_UNSPECIFIED = 0;
+  JOB_FUNCTION_IT_OPERATIONS = 1;
+  JOB_FUNCTION_ML_OPERATIONS = 2;
+  JOB_FUNCTION_DATA_SCIENCE = 3;
+  JOB_FUNCTION_DATA_ENGINEERING = 4;
+  JOB_FUNCTION_SOFTWARE_DEVELOPMENT = 5;
+  JOB_FUNCTION_PRODUCT_PROJECT_MANAGEMENT = 6;
+}
+
+enum Interest {
+  INTEREST_UNSPECIFIED = 0;
+  INTEREST_AI = 1;
+  INTEREST_SOFTWARE_DEVELOPMENT = 2;
+  INTEREST_ML_CV = 3;
+  INTEREST_ML_LLM = 4;
+  INTEREST_ML_NLP = 5;
+  INTEREST_ML_RL = 6;
+  INTEREST_ML_GAN = 7;
+  INTEREST_BIG_DATA = 8;
+  INTEREST_DATA_SCIENCE = 9;
+  INTEREST_DISTRIBUTED_SYSTEMS = 10;
+}
+
+enum EmploymentType {
+  EMPLOYMENT_TYPE_UNSPECIFIED = 0;
+  EMPLOYMENT_TYPE_FREELANCER = 1;
+  EMPLOYMENT_TYPE_FULL_TIME = 2;
+  EMPLOYMENT_TYPE_PART_TIME = 3;
+}
+
+enum WorkMode {
+  WORK_MODE_UNSPECIFIED = 0;
+  WORK_MODE_REMOTE = 1;
+  WORK_MODE_AT_OFFICE = 2;
+  WORK_MODE_HYBRID = 3;
+}

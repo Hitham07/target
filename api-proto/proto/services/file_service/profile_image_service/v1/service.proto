@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package proto.services.profile_image_service.v1;
+
+import "google/api/annotations.proto";
+
+message UploadUserImageRequest {
+  bytes image = 1;
+  string csrf_token = 2;
+}
+
+message UploadUserImageResponse {
+  string image_url = 1;
+}
+
+message ImageCroppingRequest {
+    int64 x = 2;
+    int64 y = 3;
+    int64 width = 4;
+    int64 height = 5;
+}
+
+message ImageCroppingResponse {
+  string thumbnail_profile_picture_url = 1;
+  string cropped_profile_picture_url = 2;
+}
+
+message FetchUserImageRequest {
+  string image_uri = 1;
+}
+
+message FetchUserImageResponse {
+  string image_url = 1;
+}
+
+message RemoveUserImageRequest {
+}
+
+message RemoveUserImageResponse {
+}
+
+service ProfileImageService {
+    rpc UploadUserImage(UploadUserImageRequest) returns (UploadUserImageResponse) {
+      option (google.api.http) = {
+      post: "/v1/account/upload_user_image"
+      body: "*"
+      };
+    };
+    rpc ImageCropping(ImageCroppingRequest) returns (ImageCroppingResponse);
+    rpc FetchUserImage(FetchUserImageRequest) returns (FetchUserImageResponse);
+    rpc RemoveUserImage(RemoveUserImageRequest) returns (RemoveUserImageResponse);
+}

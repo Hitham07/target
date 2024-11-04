@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "proto/common/session/v1/session.proto";
+
+message GetSoftwareStacksPresetRequest {
+    string session_id = 1;
+}
+
+message GetSoftwareStacksPresetResponse {
+    repeated string software_stacks_ids = 1;
+}
+
+message SaveSoftwareStacksSelectionsRequest {
+    string session_id = 1;
+    string csrf_token = 2;
+
+    repeated string software_stacks_ids = 3;
+}
+
+message SaveSoftwareStacksSelectionsResponse {
+    proto.common.session.v1.ConfigurationStep next_step = 1;
+}

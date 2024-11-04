@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto.services.token_service.v1;
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  string new_token = 1;
+}
+
+service TokenService {
+  // Validates the token and returns a new token
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - DEADLINE_EXCEEDED -> 4: The request took too long to process
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {
+  }
+}

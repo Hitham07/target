@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package proto.common.device.v1;
+
+import "proto/common/device/v1/location.proto";
+
+enum BrowserType {
+  BROWSER_TYPE_UNKNOWN_BROWSER_TYPE_UNSPECIFIED = 0;
+  BROWSER_TYPE_CHROME = 1;
+  BROWSER_TYPE_FIREFOX = 2;
+  BROWSER_TYPE_SAFARI = 3;
+  BROWSER_TYPE_IE = 4;
+  BROWSER_TYPE_EDGE = 5;
+  BROWSER_TYPE_OPERA = 6;
+  BROWSER_TYPE_BOT = 7;
+  BROWSER_TYPE_YAHOOBOT = 8;
+  BROWSER_TYPE_QQ = 9;
+  BROWSER_TYPE_UCBROWSER = 10;
+  BROWSER_TYPE_SILK = 11;
+}
+
+enum OS {
+  OS_UNKNOWN_OS_UNSPECIFIED = 0;
+  OS_WINDOWS = 1;
+  OS_MAC_OS_X = 2;
+  OS_LINUX = 3;
+  OS_IOS = 4;
+  OS_ANDROID = 5;
+  OS_BLACKBERRY = 6;
+  OS_CHROME_OS = 7;
+  OS_WEB_OS = 8;
+  OS_BOT = 9;
+}
+
+enum DeviceCategory {
+  DEVICE_CATEGORY_UNKNOWN_DEVICE_CATEGORY_UNSPECIFIED = 0;
+  DEVICE_CATEGORY_DESKTOP = 1;
+  DEVICE_CATEGORY_MOBILE = 2;
+  DEVICE_CATEGORY_TABLET = 3;
+  DEVICE_CATEGORY_CONSOLE = 4;
+  DEVICE_CATEGORY_WEARABLE = 5;
+  DEVICE_CATEGORY_TV = 6;
+}
+
+enum InternetConnectionType {
+  INTERNET_CONNECTION_TYPE_UNKNOWN_UNSPECIFIED = 0;
+  INTERNET_CONNECTION_TYPE_WIFI = 1;
+  INTERNET_CONNECTION_TYPE_ETHERNET = 2;
+  INTERNET_CONNECTION_TYPE_CELLULAR = 3;
+  INTERNET_CONNECTION_TYPE_CELLULAR_2G = 4;
+  INTERNET_CONNECTION_TYPE_CELLULAR_3G = 5;
+  INTERNET_CONNECTION_TYPE_CELLULAR_4G = 6;
+  INTERNET_CONNECTION_TYPE_CELLULAR_5G = 7;
+}
+
+message BrowserInformation {
+  string accept = 1;
+  string accept_encoding = 2;
+  string accept_language = 3;
+  string cache_control = 4;
+  string user_agent = 5;
+  string browser_version = 6;
+  string browser_engine = 8;
+  BrowserType browser_type = 10;
+  Location location = 11;
+}
+
+message DeviceInformation {
+  string device_model = 1;
+  string device_id = 2;
+  string device_version = 3;
+  string device_vendor = 4;
+  string device_cpu_architecture = 5;
+  string timezone = 7;
+}
+
+message ScreenInformation {
+  string screen_print = 1;
+  string color_depth = 2;
+  string screen_resolution = 3;
+}
+
+message NetworkInformation {
+  InternetConnectionType connection_type = 1;
+  bool using_vpn = 2;
+  string wifi_name = 3;
+  string wifi_bssid = 4;
+  string wifi_ipv4 = 5;
+  string wifi_ipv6 = 6;
+  string wifi_sub_mask = 7;
+  string wifi_broadcast = 8;
+  string wifi_gateway = 9;
+}
+
+message IpInformation {
+  string ip_address_v4 = 1;
+  string ip_address_v6 = 2;
+  string telecom_provider = 3;
+  string telecom_provider_detailed_info = 4;
+  bool using_vpn = 5;
+  Address ip_identified_address = 6;
+}
+
+message Device {
+  string device_id = 1;
+  string fingerprint = 2;
+  DeviceCategory device_category = 5;
+  OS os = 6;
+  DeviceInformation device_info = 7;
+  ScreenInformation screen = 8;
+  NetworkInformation network = 9;
+  IpInformation ip_info = 10;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto.services.user_consent_service.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message UserAgreement {
+  string agreement_id = 1;
+  string agreement_title = 2;
+  google.protobuf.Timestamp publish_date = 3;
+  float version = 4;
+  string text = 5;
+  string hash = 6;
+  string text_link = 7;
+  string html_link = 8;
+}
+
+message GetUserAgreementRequest {
+  float version = 1;
+}
+
+message GetUserAgreementResponse {
+  UserAgreement agreement = 1;
+}
+
+service UserConsentService {
+  rpc GetUserAgreement(GetUserAgreementRequest) returns (GetUserAgreementResponse);
+}

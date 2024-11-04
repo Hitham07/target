@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package proto.services.termination_routine_service.v1;
+
+import "proto/common/termination_routine/v1/termination_routine.proto";
+
+message GetTerminationRoutineRequest {
+    string termination_routine_id = 1;
+}
+
+message GetTerminationRoutineResponse {
+    proto.common.termination_routine.v1.TerminationRoutine termination_routine = 1;
+}
+
+message ListTerminationRoutinesRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListTerminationRoutinesResponse {
+    repeated proto.common.termination_routine.v1.TerminationRoutine termination_routines = 1;
+}
+
+service TerminationRoutineService {
+
+    // Retrieves a termination routine
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The termination routine does not exist
+    rpc GetTerminationRoutine(GetTerminationRoutineRequest) returns (GetTerminationRoutineResponse);
+    
+    // Lists termination routines
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListTerminationRoutines(ListTerminationRoutinesRequest) returns (ListTerminationRoutinesResponse);
+}

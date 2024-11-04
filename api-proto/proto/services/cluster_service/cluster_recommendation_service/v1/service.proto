@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package proto.services.cluster_recommendation_service.v1;
+
+import "proto/common/external_vendor/aws/v1/instance_information.proto";
+import "proto/common/external_vendor/v1/vendor.proto";
+import "google/protobuf/timestamp.proto";
+
+message GetClusterRecommendationRequest {
+    string session_id = 1;
+    string cluster_configuration_id = 2;
+}
+
+message GetClusterRecommendationResponse {
+    repeated ClusterRecommendation cluster_recommendations = 1;
+}
+
+message ClusterRecommendation {
+    string id = 1;
+    string configuration_id = 2;
+    string organization_id = 3;
+    proto.common.external_vendor.v1.VendorType vendor = 4;
+    int64 virtual_cpus = 5;
+    double memory = 6;
+    int64 storage = 7;
+    int64 number_of_nodes = 8;
+    optional proto.common.external_vendor.aws.v1.AwsInstanceGpu gpu = 9;
+    optional proto.common.external_vendor.aws.v1.AwsInstanceFpga fpga = 10;
+    google.protobuf.Timestamp created_at = 11;
+}
+
+service ClusterRecommendationService {
+
+    // Retrieves cluster recommendations
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //         - x-organization-id: The organization id
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The configuration does not exist
+    //         - DEADLINE_EXCEEDED -> 4: The request took too long to process
+    rpc GetClusterRecommendation (GetClusterRecommendationRequest) returns (GetClusterRecommendationResponse);
+}

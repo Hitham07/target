@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "proto/common/user/v1/user.proto";
+
+message Verification {
+  string code = 1;
+  string client_preferred_language = 2;
+  common.user.v1.UserInformation user_info = 3;
+  common.user.v1.BasicIdentifier identifier = 4;
+}

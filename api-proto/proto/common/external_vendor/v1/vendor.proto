@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package proto.common.external_vendor.v1;
+
+enum VendorAccountType {
+    VENDOR_ACCOUNT_TYPE_UNSPECIFIED = 0;
+    VENDOR_ACCOUNT_TYPE_AWS = 1;
+    VENDOR_ACCOUNT_TYPE_GCP = 2;
+    VENDOR_ACCOUNT_TYPE_AZURE = 3;
+    VENDOR_ACCOUNT_TYPE_HETZNER = 4;
+}
+
+enum VendorType {
+    VENDOR_TYPE_UNSPECIFIED = 0;
+    VENDOR_TYPE_HETZNER = 1;
+    VENDOR_TYPE_IONOS = 2;
+    VENDOR_TYPE_AWS = 3;
+    VENDOR_TYPE_GCP = 4;
+    VENDOR_TYPE_AZURE = 5;
+}

@@ -1,0 +1,332 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "google/protobuf/empty.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/setup_strategy.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/session.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/vendor_configuration.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/software_stack.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/tailored_settings.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/organize_and_launch.proto";
+import "proto/services/cluster_service/cluster_configuration_service/v1/summary.proto";
+import "proto/common/external_vendor/gcp/v1/configuration.proto";
+import "proto/common/external_vendor/aws/v1/configuration.proto";
+import "proto/common/external_vendor/hetzner/v1/configuration.proto";
+import "proto/common/external_vendor/v1/vendor.proto";
+import "google/protobuf/timestamp.proto";
+
+message ClusterConfiguration {
+    string id = 1;
+    optional string organization_id = 2;
+    ClusterPurpose cluster_purpose = 3;
+    CloudDistributionPolicy cloud_distribution_policy = 4;
+    proto.common.external_vendor.v1.VendorType vendor = 5;
+    ClusterScalability scalability = 6;
+    TargetDeployment target_deployment = 7;
+    ClusterEnvironmentSetup cluster_environment_setup = 8;
+    CloudCertificationPolicy cloud_certification_policy = 9;
+    repeated string data_sources_ids = 10;
+    string auditing_profile_id = 11;
+    repeated ComplianceOffering compliance_offerings = 12;
+    optional proto.common.external_vendor.gcp.v1.GCPConfiguration gcp_cluster_configuration = 13;
+    optional proto.common.external_vendor.aws.v1.AWSConfiguration aws_cluster_configuration = 14;
+    optional proto.common.external_vendor.hetzner.v1.HetzenrConfiguration hetzner_cluster_configuration = 15;
+    optional HybridClusterConfiguration hybrid_cluster_configuration = 16;
+    repeated string software_stacks_ids = 17;
+    ClusterNetworkType cluster_network_type = 18;
+    repeated string whitelisted_networks_ids = 19;
+    repeated string firewalls_ids = 20;
+    ClusterAccess cluster_access = 21;
+    optional string team_id = 22;
+    bool extended_availability = 23;
+    ResourceGrouping resource_grouping = 24;
+    optional string resource_pool_id = 25;
+    KubernetesVersion kubernetes_version = 26;
+    optional string jumper_server_id = 27;
+    string configuration_name = 28;
+    ShutdownScheduleOption shutdown_schedule_option = 29;
+    optional string shutdown_schedule_profile_id = 30;
+    optional ShutdownSchedule shutdown_schedule = 31;
+    optional string termination_routine_id = 32;
+    google.protobuf.Timestamp created_at = 33;
+    string new_test_feild = 34;
+}
+
+message SaveClusterConfigurationRequest {
+    string session_id = 1;
+}
+
+message SaveClusterConfigurationResponse {
+    string configuration_id = 1;
+}
+
+message GetClusterConfigurationRequest {
+    string configuration_id = 1;
+}
+
+message GetClusterConfigurationResponse {
+    ClusterConfiguration configuration = 1;
+}
+
+message ListClusterConfigurationsRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListClusterConfigurationsResponse {
+    repeated ClusterConfiguration configurations = 1;
+}
+
+message DeleteClusterConfigurationRequest {
+    string configuration_id = 1;
+}
+
+service ClusterConfigurationService {
+    
+    // Initiates a new session to create a cluster configuration
+    // The session will be used to store the selections made by the user
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //         - x-organization-id: The organization id
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint or the x-organization-id is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    rpc InitiateCreateClusterConfigurationSession (google.protobuf.Empty) returns (InitiateCreateClusterConfigurationSessionResponse);
+    
+    // Retrieves the saved selections for the setup strategy
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step
+    rpc GetSetupStrategyPreset (GetSetupStrategyPresetRequest) returns (GetSetupStrategyPresetResponse);
+    
+    // Saves the selections for the setup strategy
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step or invalid input data
+    //     Possible error fields:
+    //         - cluster_purpose
+    //         - scalability
+    //         - target_deployment
+    //         - cluster_environment_setup
+    //         - cloud_distribution_policy
+    //         - vendor
+    //         - cloud_certification_policy
+    //         - data_sources_ids
+    //         - auditing_profile_id
+    rpc SaveSetupStrategySelections (SaveSetupStrategySelectionsRequest) returns (SaveSetupStrategySelectionsResponse);
+    
+    // Retrieves the saved selections for the vendor configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step
+    rpc GetVendorConfigurationPreset (GetVendorConfigurationPresetRequest) returns (GetVendorConfigurationPresetResponse);
+    
+    // Saves the selections for the vendor configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step or invalid input data
+    //     Possible error fields:
+    //         - aws_account_option
+    //         - aws_organization_account_id
+    //         - hosting_region_option
+    //         - regions
+    //         - country
+    //         - cluster_provisioner_iam_username
+    //         - resource_names_prefix
+    //         - resource_tags_key_prefix
+    //         - aws_resource_tags[<index>].key
+    //         - aws_resource_tags[<index>].value
+    rpc SaveVendorConfigurationSelections (SaveVendorConfigurationSelectionsRequest) returns (SaveVendorConfigurationSelectionsResponse);
+    
+    // Retrieves the saved selections for the software stacks
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step
+    rpc GetSoftwareStacksPreset (GetSoftwareStacksPresetRequest) returns (GetSoftwareStacksPresetResponse);
+    
+    // Saves the selections for the software stacks
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step or invalid input data
+    //     Possible error fields:
+    //         - software_stacks_ids
+    //         - software_stacks_ids.<mandatoryStackId>
+    rpc SaveSoftwareStacksSelections (SaveSoftwareStacksSelectionsRequest) returns (SaveSoftwareStacksSelectionsResponse);
+    
+    // Retrieves the saved selections for the tailored settings
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step
+    rpc GetTailoredSettingsPreset (GetTailoredSettingsPresetRequest) returns (GetTailoredSettingsPresetResponse);
+    
+    // Saves the selections for the tailored settings
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step or invalid input data
+    //     Possible error fields:
+    //         - cluster_network_type
+    //         - whitelisted_networks_ids
+    //         - firewalls_ids
+    //         - cluster_access
+    //         - team_id
+    //         - resource_grouping
+    //         - resource_pool_id
+    //         - kubernetes_version
+    //         - jumper_server_id
+    rpc SaveTailoredSettingsSelections (SaveTailoredSettingsSelectionsRequest) returns (SaveTailoredSettingsSelectionsResponse);
+    
+    // Retrieves the saved selections for the organize and launch
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step
+    rpc GetOrganizeAndLaunchPreset (GetOrganizeAndLaunchPresetRequest) returns (GetOrganizeAndLaunchPresetResponse);
+    
+    // Saves the selections for the organize and launch
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    //         - INVALID_ARGUMENT -> 3: Invalid session step or invalid input data
+    //         - ALREADY_EXISTS -> 6: The configuration name already exists
+    //     Possible error fields:
+    //         - configuration_name
+    //         - shutdown_schedule_option
+    //         - schedule_profile_id
+    //         - shutdown_schedule
+    //         - termination_routine_id
+    rpc SaveOrganizeAndLaunchSelections (SaveOrganizeAndLaunchSelectionsRequest) returns (SaveOrganizeAndLaunchSelectionsResponse);
+
+    // Retrieves the summary of the cluster configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist
+    rpc GetClusterConfigurationSummary (GetClusterConfigurationSummaryRequest) returns (GetClusterConfigurationSummaryResponse);
+    
+    // Saves the summary of the cluster configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The session does not exist or some of the selections do not exist
+    rpc SaveClusterConfiguration (SaveClusterConfigurationRequest) returns (SaveClusterConfigurationResponse);
+
+    // Retrieves the cluster configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //         - x-organization-id: The organization id
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint or the x-organization-id is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The configuration does not exist
+    rpc GetClusterConfiguration (GetClusterConfigurationRequest) returns (GetClusterConfigurationResponse);
+    
+    // Lists the cluster configurations
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //         - x-organization-id: The organization id
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint or the x-organization-id is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListClusterConfigurations (ListClusterConfigurationsRequest) returns (ListClusterConfigurationsResponse);
+    
+    // Deletes the cluster configuration
+    //     Request Metadata:
+    //         - authorization: Bearer token for authentication
+    //         - x-fingerprint: The fingerprint of the user
+    //         - x-organization-id: The organization id
+    //     Response Metadata:
+    //         - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //     Possible gRPC errors:
+    //         - FAILED_PRECONDITION -> 9: The x-fingerprint or the x-organization-id is missing
+    //         - INTERNAL -> 13: The something went wrong in the server side
+    //         - NOT_FOUND -> 5: The configuration does not exist
+    rpc DeleteClusterConfiguration (DeleteClusterConfigurationRequest) returns (google.protobuf.Empty);
+}

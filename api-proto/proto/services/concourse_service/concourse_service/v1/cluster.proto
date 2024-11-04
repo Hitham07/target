@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package proto.services.concourse_service.v1;
+
+message CreateClusterRequest {
+    string cluster_id = 1;
+    string organization_id = 2;
+    string main_network_name = 3;
+    string main_network_cidr = 4;
+    string network_zone = 5;
+    string private_domain = 6;
+    string loki_url = 7;
+    string machine_zone = 8;
+    string k8s_network_name = 9;
+    string k8s_network_cidr = 10;
+    string cluster_name = 11;
+    string cluster_sub_domain = 12;
+    string public_domain = 13;
+    string kubernetes_version = 14;
+    string instance_type = 15;
+}
+
+message DestroyClusterRequest {
+    string cluster_id = 1;
+    string organization_id = 2;
+    string main_network_name = 3;
+    string main_network_cidr = 4;
+    string network_zone = 5;
+    string private_domain = 6;
+    string loki_url = 7;
+    string machine_zone = 8;
+    string k8s_network_name = 9;
+    string k8s_network_cidr = 10;
+    string cluster_name = 11;
+    string cluster_sub_domain = 12;
+    string public_domain = 13;
+    string kubernetes_version = 14;
+    string instance_type = 15;
+}

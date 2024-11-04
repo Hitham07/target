@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package proto.services.organization_service.v1;
+
+import "proto/common/user/v1/organization.proto";
+import "proto/common/user/v1/user.proto";
+
+message UpdateOrganizationRequest {
+  string public_id = 1;
+  string name = 2;
+  string description = 3;
+  bytes logo = 4;
+  repeated proto.common.user.v1.Administration admins = 5;
+}
+
+message UpdateOrganizationResponse {
+}
+
+message SwitchOrganizationRequest {
+  string public_id = 1;
+}
+
+message SwitchOrganizationResponse {
+}
+
+message GetOrganizationRequest {
+}
+
+message OrganizationMessage {
+  proto.common.user.v1.Organization organization = 1;
+  string logo_url = 2;
+}
+
+message GetOrganizationResponse {
+  repeated OrganizationMessage organizations = 1;
+}
+
+message InviteUserRequest {
+  string organization_public_id = 1;
+  proto.common.user.v1.BasicIdentifier identifier = 2;
+}
+
+message InviteUserResponse {
+}
+
+service OrganizationService {
+  // Retrieves the user's organization
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse);
+  // Invites a user to an organization
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: The user is not admin of the organization to invite a user
+  //        - PERMISSION_DENIED -> 7: The user is not part of the organization
+  rpc InviteUser(InviteUserRequest) returns (InviteUserResponse);
+  //  Switches the user's organization
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - PERMISSION_DENIED -> 7: The user is not part of the organization
+  rpc SwitchOrganization(SwitchOrganizationRequest) returns (SwitchOrganizationResponse);
+  // Updates the organization
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - PERMISSION_DENIED -> 7: The user is not part of the organization
+  rpc UpdateOrganization(UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
+}

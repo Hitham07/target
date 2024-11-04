@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package proto.common.image.v1;
+
+message ImageUploadedMessage {
+  string user_id = 1;
+  string image_id = 2;
+  PhotoType photo_type = 3;
+}
+
+enum PhotoType {
+  PHOTO_TYPE_ORIGINAL_UNSPECIFIED = 0;
+  PHOTO_TYPE_THUMBNAIL = 1;
+  PHOTO_TYPE_CROPPED = 2;
+  PHOTO_TYPE_PREVIEW = 3;
+}
+

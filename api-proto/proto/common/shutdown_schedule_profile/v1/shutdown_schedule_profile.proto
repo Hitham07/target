@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto.common.shutdown_schedule_profile.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message ShutdownScheduleProfile {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string organization_id = 4;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}

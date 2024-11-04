@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package proto.common.external_vendor.aws.v1;
+
+import "proto/common/external_vendor/v1/vendor.proto";
+import "proto/common/external_vendor/aws/v1/instance_information.proto";
+
+message AWSConfiguration {
+    AWSAccountOption aws_account_option = 1;
+    optional string aws_organization_account_id = 2;
+    optional string cluster_provisioner_iam_username = 3;
+    optional string resource_names_prefix = 4;
+    optional string resource_tags_key_prefix = 5;
+    AWSHostingRegionOption hosting_region_option = 6;
+    repeated AwsRegionEnum regions = 7;
+    AWSCountry country = 8;
+    AWSVPCConfiguration aws_vpc_configuration = 9;
+    repeated AWSResourceTag aws_resource_tags = 10;
+}
+
+enum AWSAccountOption { 
+    AWS_ACCOUNT_OPTION_UNSPECIFIED = 0;
+    AWS_ACCOUNT_OPTION_KUBEREX_ACCOUNT = 1;
+    AWS_ACCOUNT_OPTION_ORGANIZATION_ACCOUNT = 2;
+}
+
+message AWSOrganizationAccount {
+    string id = 1;
+    string name = 2;
+    string organization_id = 3;
+    string aws_account_id = 4;
+    string aws_organization_id = 5;
+    string aws_admin_user = 6;
+    proto.common.external_vendor.v1.VendorAccountType account_type = 7;
+}
+
+enum AWSHostingRegionOption {
+    AWS_HOSTING_REGION_OPTION_UNSPECIFIED = 0;
+    AWS_HOSTING_REGION_OPTION_GLOBAL = 1;
+    AWS_HOSTING_REGION_OPTION_REGION_BASED = 2;
+    AWS_HOSTING_REGION_OPTION_COUNTRY_BASED = 3;
+}
+
+enum AWSCountry {
+    AWS_COUNTRY_UNSPECIFIED = 0;
+    AWS_COUNTRY_US = 1;
+    AWS_COUNTRY_UK = 2;
+    AWS_COUNTRY_CA = 3;
+    AWS_COUNTRY_DE = 4;
+    AWS_COUNTRY_FR = 5;
+    AWS_COUNTRY_BE = 6;
+    AWS_COUNTRY_SE = 7;
+    AWS_COUNTRY_IE = 8;
+}
+
+message AWSVPCConfiguration {
+    AWSIpV6CidrBlockOption aws_ip_v6_cidr_block_option = 1;
+    AWSVpcTenancy aws_vpc_tenancy = 2;
+    AWSVpcZone aws_vpc_zone = 3; // TODO: make this repeated
+    repeated AWSDnsOption aws_dns_options = 4;
+}
+
+enum AWSIpV6CidrBlockOption {
+    AWS_IP_V6_CIDR_BLOCK_OPTION_UNSPECIFIED = 0;
+    AWS_IP_V6_CIDR_BLOCK_OPTION_NO_SPECIFIC_BLOCK = 1;
+    AWS_IP_V6_CIDR_BLOCK_OPTION_AMAZON_PROVIDED = 2;
+}
+
+enum AWSVpcTenancy {
+    AWS_VPC_TENANCY_UNSPECIFIED = 0;
+    AWS_VPC_TENANCY_DEFAULT = 1;
+    AWS_VPC_TENANCY_DEDICATED = 2;
+}
+
+enum AWSVpcZone {
+    AWS_VPC_ZONE_UNSPECIFIED = 0;
+    AWS_VPC_ZONE_A = 1;
+    AWS_VPC_ZONE_B = 2;
+    AWS_VPC_ZONE_C = 3;
+}
+
+enum AWSDnsOption {
+    AWS_DNS_OPTION_UNSPECIFIED = 0;
+    AWS_DNS_OPTION_ENABLE_HOSTNAMES = 1;
+    AWS_DNS_OPTION_ENABLE_DNS_RESOLUTION_THROUGH_AWS_SERVER = 2;
+}
+
+message AWSResourceTag {
+    string key = 1;
+    string value = 2;
+}

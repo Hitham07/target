@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package proto.services.account_recovery_service.v1;
+
+import "proto/common/user/v1/user.proto";
+
+
+message ResetPasswordRequest {
+  proto.common.user.v1.BasicIdentifier identifier = 1;
+  string new_password = 2;
+  string csrf_token = 3; //encrypted csrf token
+}
+
+// Response to password reset
+message ResetPasswordResponse {
+  string client_jwt = 1;
+}
+
+service AccountRecoveryService {
+  // Reset the password of the user
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  //       - INVALID_ARGUMENT -> 3: if user does not exist
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+}

@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "proto/common/session/v1/session.proto";
+
+message GetTailoredSettingsPresetRequest {
+    string session_id = 1;
+}
+
+message GetTailoredSettingsPresetResponse {
+    ClusterNetworkType cluster_network_type = 1;
+    repeated string whitelisted_networks_ids = 2;
+    repeated string firewalls_ids = 3;
+    ClusterAccess cluster_access = 4;
+    optional string team_id = 5;
+    bool extended_availability = 8;
+    ResourceGrouping resource_grouping = 9;
+    optional string resource_pool_id = 10;
+    KubernetesVersion kubernetes_version = 11;
+    optional string jumper_server_id = 12;
+}
+
+message SaveTailoredSettingsSelectionsRequest {
+    string session_id = 1;
+    string csrf_token = 2;
+    
+    ClusterNetworkType cluster_network_type = 3;
+    repeated string whitelisted_networks_ids = 4;
+    repeated string firewalls_ids = 5;
+    ClusterAccess cluster_access = 6;
+    optional string team_id = 7;
+    bool extended_availability = 10;
+    ResourceGrouping resource_grouping = 11;
+    optional string resource_pool_id = 12;
+    KubernetesVersion kubernetes_version = 13;
+    optional string jumper_server_id = 14;
+}
+
+message SaveTailoredSettingsSelectionsResponse {
+    proto.common.session.v1.ConfigurationStep next_step = 1;
+}
+
+enum ClusterNetworkType {
+    CLUSTER_NETWORK_TYPE_UNSPECIFIED = 0;
+    CLUSTER_NETWORK_TYPE_ACCESSIBLE = 1;
+    CLUSTER_NETWORK_TYPE_AIR_GAPPED = 2;
+}
+
+
+enum ClusterAccess {
+    CLUSTER_ACCESS_UNSPECIFIED = 0;
+    CLUSTER_ACCESS_PUBLICLY = 1;
+    CLUSTER_ACCESS_INTERNAL_VIA_VPN = 2;
+}
+
+enum ResourceGrouping {
+    RESOURCE_GROUPING_UNSPECIFIED = 0;
+    RESOURCE_GROUPING_SPECIFIC_POOL = 1;
+    RESOURCE_GROUPING_UNSPECIFIC_POOL = 2;
+}
+
+enum KubernetesVersion {
+    KUBERNETES_VERSION_UNSPECIFIED = 0;
+    KUBERNETES_VERSION_LATEST = 1;
+    KUBERNETES_VERSION_1_29 = 2;
+    KUBERNETES_VERSION_1_30 = 3;
+    KUBERNETES_VERSION_1_31 = 4;
+}

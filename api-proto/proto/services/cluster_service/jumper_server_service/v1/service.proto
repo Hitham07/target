@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package proto.services.jumper_server_service.v1;
+
+import "google/protobuf/empty.proto";
+import "proto/common/jumper_server/v1/jumper_server.proto";
+
+message CreateJumperServerRequest {
+    string name = 1;
+    string description = 4;
+    repeated string whitelisted_ip_addresses = 5;
+    bool enable_logging = 6;
+    bytes public_key = 7;
+}
+
+message CreateJumperServerResponse {
+    proto.common.jumper_server.v1.JumperServer jumper_server = 1;
+}
+
+message GetJumperServerRequest {
+    string jumper_server_id = 1;
+}
+
+message GetJumperServerResponse {
+    proto.common.jumper_server.v1.JumperServer jumper_server = 1;
+}
+
+message ListJumperServersRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListJumperServersResponse {
+    repeated proto.common.jumper_server.v1.JumperServer jumper_servers = 1;
+}
+
+message DeleteJumperServerRequest {
+    string jumper_server_id = 1;
+}
+
+message UpdateJumperServerRequest {
+    string jumper_server_id = 1;
+    optional string name = 2;
+    optional string description = 3;
+    repeated string whitelisted_ip_addresses = 4;
+    optional bool enable_logging = 5;
+    optional bytes public_key = 6;
+}
+
+message UpdateJumperServerResponse {
+    proto.common.jumper_server.v1.JumperServer jumper_server = 1;
+}
+
+service JumperServerService {
+
+    // Creates a new jumper server
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - ALREADY_EXISTS -> 6: The jumper server name already exists
+    rpc CreateJumperServer(CreateJumperServerRequest) returns (CreateJumperServerResponse);
+    
+    // Retrieves a jumper server
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The jumper server does not exist
+    rpc GetJumperServer(GetJumperServerRequest) returns (GetJumperServerResponse);
+    
+    // Lists jumper servers
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListJumperServers(ListJumperServersRequest) returns (ListJumperServersResponse);
+    
+    // Deletes a jumper server
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The jumper server does not exist
+    rpc DeleteJumperServer(DeleteJumperServerRequest) returns (google.protobuf.Empty);
+    
+    // Updates a jumper server
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The jumper server does not exist
+    rpc UpdateJumperServer(UpdateJumperServerRequest) returns (UpdateJumperServerResponse);
+}

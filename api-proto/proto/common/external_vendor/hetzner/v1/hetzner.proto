@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package proto.common.external_vendor.hetzner.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message HetznerServerInformation {
+    HetznerServerType server_type = 1;
+    string description = 2;
+    int64 cores = 3;
+    double memory = 4;
+    int64 disk = 5;
+    repeated HetznerLocation locations = 6;
+    HetznerStorageType storage_type = 7;
+    HetznerCpuType cpu_type = 8;
+    HetznerCpuArchitecture cpu_architecture = 9;
+    google.protobuf.Timestamp updated_at = 10;
+}
+
+message HetznerLocation {
+    HetznerLocationName name = 1;
+    string description = 2;
+    string city = 3;
+    double latitude = 4;
+    double longitude = 5;
+    HetznerCountry country = 6;
+    HetznerRegion region = 7;
+}
+
+message HetznerServerType {
+    string server_type = 1;
+    HetznerServerTypeEnum server_type_enum = 2;
+}
+
+enum HetznerServerTypeEnum {
+    HETZNER_SERVER_TYPE_ENUM_UNSPECIFIED = 0;
+    HETZNER_SERVER_TYPE_ENUM_CX11 = 1;
+    HETZNER_SERVER_TYPE_ENUM_CX21 = 2;
+    HETZNER_SERVER_TYPE_ENUM_CX31 = 3;
+    HETZNER_SERVER_TYPE_ENUM_CX41 = 4;
+    HETZNER_SERVER_TYPE_ENUM_CX51 = 5;
+    HETZNER_SERVER_TYPE_ENUM_CPX11 = 6;
+    HETZNER_SERVER_TYPE_ENUM_CPX21 = 7;
+    HETZNER_SERVER_TYPE_ENUM_CPX31 = 8;
+    HETZNER_SERVER_TYPE_ENUM_CPX41 = 9;
+    HETZNER_SERVER_TYPE_ENUM_CPX51 = 10;
+    HETZNER_SERVER_TYPE_ENUM_CAX11 = 11;
+    HETZNER_SERVER_TYPE_ENUM_CAX21 = 12;
+    HETZNER_SERVER_TYPE_ENUM_CAX31 = 13;
+    HETZNER_SERVER_TYPE_ENUM_CAX41 = 14;
+    HETZNER_SERVER_TYPE_ENUM_CCX13 = 15;
+    HETZNER_SERVER_TYPE_ENUM_CCX23 = 16;
+    HETZNER_SERVER_TYPE_ENUM_CCX33 = 17;
+    HETZNER_SERVER_TYPE_ENUM_CCX43 = 18;
+    HETZNER_SERVER_TYPE_ENUM_CCX53 = 19;
+    HETZNER_SERVER_TYPE_ENUM_CCX63 = 20;
+    HETZNER_SERVER_TYPE_ENUM_CX22 = 21;
+    HETZNER_SERVER_TYPE_ENUM_CX32 = 22;
+    HETZNER_SERVER_TYPE_ENUM_CX42 = 23;
+    HETZNER_SERVER_TYPE_ENUM_CX52 = 24;
+}
+
+message HetznerRegion {
+    string region = 1;
+    HetznerRegionEnum region_enum = 2;
+}
+
+enum HetznerRegionEnum {
+    HETZNER_REGION_ENUM_UNSPECIFIED = 0;
+    HETZNER_REGION_ENUM_EU_CENTRAL = 1;
+    HETZNER_REGION_ENUM_AP_SOUTHEAST = 2;
+    HETZNER_REGION_ENUM_US_EAST = 3;
+    HETZNER_REGION_ENUM_US_WEST = 4;
+}
+
+message HetznerStorageType {
+    string type = 1;
+    HetznerStorageTypeEnum type_enum = 2;
+}
+
+enum HetznerStorageTypeEnum {
+    HETZNER_STORAGE_TYPE_ENUM_UNSPECIFIED = 0;
+    HETZNER_STORAGE_TYPE_ENUM_LOCAL = 1;
+    HETZNER_STORAGE_TYPE_ENUM_CEPH = 2;
+}
+
+message HetznerCpuType {
+    string type = 1;
+    HetznerCpuTypeEnum type_enum = 2;
+}
+
+enum HetznerCpuTypeEnum {
+    HETZNER_CPU_TYPE_ENUM_UNSPECIFIED = 0;
+    HETZNER_CPU_TYPE_ENUM_SHARED = 1;
+    HETZNER_CPU_TYPE_ENUM_DEDICATED = 2;
+}
+
+message HetznerCpuArchitecture {
+    string architecture = 1;
+    HetznerCpuArchitectureEnum architecture_enum = 2;
+}
+
+enum HetznerCpuArchitectureEnum {
+    HETZNER_CPU_ARCHITECTURE_ENUM_UNSPECIFIED = 0;
+    HETZNER_CPU_ARCHITECTURE_ENUM_X86 = 1;
+    HETZNER_CPU_ARCHITECTURE_ENUM_ARM = 2;
+}
+
+message HetznerCountry {
+    string country = 1;
+    HetznerCountryEnum country_enum = 2;
+}
+
+enum HetznerCountryEnum {
+    HETZNER_COUNTRY_ENUM_UNSPECIFIED = 0;
+    HETZNER_COUNTRY_ENUM_DE = 1;
+    HETZNER_COUNTRY_ENUM_FI = 2;
+    HETZNER_COUNTRY_ENUM_US = 3;
+    HETZNER_COUNTRY_ENUM_SG = 4;
+}
+
+message HetznerLocationName {
+    string name = 1;
+    HetznerLocationNameEnum name_enum = 2;
+}
+
+enum HetznerLocationNameEnum {
+    HETZNER_LOCATION_NAME_ENUM_UNSPECIFIED = 0;
+    HETZNER_LOCATION_NAME_ENUM_NBG1 = 1;
+    HETZNER_LOCATION_NAME_ENUM_HEL1 = 2;
+    HETZNER_LOCATION_NAME_ENUM_FSN1 = 3;
+    HETZNER_LOCATION_NAME_ENUM_ASH = 4;
+    HETZNER_LOCATION_NAME_ENUM_HIL = 5;
+    HETZNER_LOCATION_NAME_ENUM_SIN = 6;
+} 

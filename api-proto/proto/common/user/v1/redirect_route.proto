@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+enum RedirectRoute {
+  REDIRECT_ROUTE_UNSPECIFIED = 0;
+  REDIRECT_ROUTE_HOME = 1;
+  REDIRECT_ROUTE_LOGIN = 2;
+  REDIRECT_ROUTE_SIGNUP = 3;
+  REDIRECT_ROUTE_PROFILE = 4;
+  REDIRECT_ROUTE_SETTINGS = 5;
+}

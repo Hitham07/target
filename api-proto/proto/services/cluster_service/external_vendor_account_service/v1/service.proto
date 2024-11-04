@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package proto.services.external_vendor_account_service.v1;
+
+import "proto/common/external_vendor/aws/v1/configuration.proto";
+
+message GetAwsVendorAccountRequest {
+    string aws_vendor_account_id = 1;
+}
+
+message GetAwsVendorAccountResponse {
+    proto.common.external_vendor.aws.v1.AWSOrganizationAccount aws_vendor_account = 1;
+}
+
+message ListAwsVendorAccountsRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListAwsVendorAccountsResponse {
+    repeated proto.common.external_vendor.aws.v1.AWSOrganizationAccount aws_vendor_accounts = 1;
+}
+
+service ExternalVendorAccountService {
+
+    // Retrieves a AWS vendor account
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The AWS vendor account does not exist
+    rpc GetAwsVendorAccount(GetAwsVendorAccountRequest) returns (GetAwsVendorAccountResponse);
+
+    // Lists AWS vendor accounts
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListAwsVendorAccounts(ListAwsVendorAccountsRequest) returns (ListAwsVendorAccountsResponse);
+}

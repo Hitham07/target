@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package proto.services.reachhub_service.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// option go_package = "github.com/area99-ai/reachhub-service/generated/proto/common/user/v1;common_v1";
+
+// UserAccountStatus is checked everytime we need to send a communication to the user
+message UserAccountStatus {
+  int32 attempt_count = 1;
+  bool activity_delayed = 2;
+  int32 delay_time = 3; // in minutes
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message User {
+  string public_id = 1;
+  Identifier default_identifier = 2;
+  repeated Identifier identifier = 3;
+  UserInformation information = 4;
+  UserSecurityCredentials security_credentials = 5;
+  UserAccountStatus account_status = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message UserSecurityCredentials {
+  string password = 2;
+}
+
+message Identifier {
+  IdentifierType identifier_type = 1;
+  string identifier = 2;
+  bool is_verified = 3;
+}
+
+// for sign up and sign in process
+message BasicIdentifier {
+  IdentifierType identifier_type = 1;
+  string identifier = 2;
+}
+
+enum IdentifierType {
+  IDENTIFIER_TYPE_UNSPECIFIED = 0;
+  IDENTIFIER_TYPE_EMAIL = 1;
+  IDENTIFIER_TYPE_MOBILE_NUMBER = 2;
+}
+
+message UserInformation{
+  string first_name = 1;
+  string last_name = 2;
+  Title title = 3;
+  string country = 4;
+  bool is_active = 5;
+  bool is_deleted = 6;
+  bool is_suspended = 7;
+  bool is_verified = 8;
+  google.protobuf.Timestamp verification_date = 9;
+  bool is_two_factor_enabled = 10;
+}
+
+enum Title {
+  TITLE_UNSPECIFIED = 0;
+  TITLE_MR = 1;
+  TITLE_MRS = 2;
+  TITLE_MS = 3;
+  TITLE_DR = 4;
+  TITLE_PROF = 5;
+}

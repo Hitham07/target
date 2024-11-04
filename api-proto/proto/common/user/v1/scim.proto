@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+message Resource {
+    repeated string schemas = 1;
+    string id = 2;
+    Meta meta = 3;
+    string name = 4;
+    repeated Attribute attributes = 5;
+}
+
+message Meta {
+    string resource_type = 1;
+    string created = 2;
+    string last_modified = 3;
+    string version = 4;
+    string location = 5;
+}
+
+message Attribute {
+    string name = 1;
+    string type = 2;
+    string mutability = 3;
+    string returned = 4;
+    string uniqueness = 5;
+    bool required = 6;
+    bool multi_valued = 7;
+    bool case_exact = 8;
+    repeated SubAttribute sub_attributes = 9;
+}
+
+message SubAttribute {
+    string name = 1;
+    string type = 2;
+    string mutability = 3;
+    string returned = 4;
+    string uniqueness = 5;
+    bool required = 6;
+    bool multi_valued = 7;
+    bool case_exact = 8;
+}
+
+message Token {
+    string token = 1;
+    string user_id = 2;
+    string organization_id = 3;
+}

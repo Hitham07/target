@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "proto/common/user/v1/user.proto";
+
+message Session {
+    string public_session_id = 1;
+    BrowserFingerPrintInfo browser_fingerprint = 2;
+    string client_fingerprint = 3;
+    string csrf = 4;
+    string encryption_key_id = 5;
+    SessionType session_type = 6;
+    optional Activation activation = 7;
+    optional string user_id = 8;
+    string device_id = 9;
+    int64 last_activated = 10;
+    int64 expires_at = 11;
+    string created_at = 12;
+    string otp = 13; // only in case of sign in otp
+    string password_token = 14; // only in case of password reset
+}
+
+message Activation {
+    string activation_code = 2;
+    proto.common.user.v1.BasicIdentifier identifier = 3;
+}
+
+message BrowserFingerPrintInfo {
+    string user_agent = 1;
+    string ip = 2;
+    string language = 3;
+    string encoding = 4;
+}
+
+enum SessionType {
+    SESSION_TYPE_UNSPECIFIED = 0;
+    SESSION_TYPE_SIGN_IN = 1;
+    SESSION_TYPE_SIGN_UP = 2;
+    SESSION_TYPE_ACTIVE_USER = 3;
+    SESSION_TYPE_IDENTIFIER_VERIFICATION = 4;
+    SESSION_TYPE_SIGN_IN_OTP = 5;
+    SESSION_TYPE_PASSWORD_RESET = 6;
+}

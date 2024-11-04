@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+import "proto/common/external_vendor/v1/vendor.proto";
+import "proto/common/session/v1/session.proto";
+
+message GetSetupStrategyPresetRequest {
+    string session_id = 1;
+}
+
+message GetSetupStrategyPresetResponse {
+    ClusterPurpose cluster_purpose = 1;
+    CloudDistributionPolicy cloud_distribution_policy = 2;
+    proto.common.external_vendor.v1.VendorType vendor = 3;
+    ClusterScalability scalability = 4;
+    TargetDeployment target_deployment = 5;
+    ClusterEnvironmentSetup cluster_environment_setup = 6;
+    CloudCertificationPolicy cloud_certification_policy = 7;
+    repeated string data_sources_ids = 8;
+    string auditing_profile_id = 9;
+    repeated ComplianceOffering compliance_offerings = 10;
+}
+
+message SaveSetupStrategySelectionsRequest {
+    string session_id = 1;
+    string csrf_token = 2;
+    ClusterPurpose cluster_purpose = 3;
+    CloudDistributionPolicy cloud_distribution_policy = 4;
+    proto.common.external_vendor.v1.VendorType vendor = 5;
+    ClusterScalability scalability = 6;
+    TargetDeployment target_deployment = 7;
+    ClusterEnvironmentSetup cluster_environment_setup = 8;
+    CloudCertificationPolicy cloud_certification_policy = 9;
+    repeated string data_sources_ids = 10;
+    string auditing_profile_id = 11;
+    repeated ComplianceOffering compliance_offerings = 12;
+}
+
+message SaveSetupStrategySelectionsResponse {
+    proto.common.session.v1.ConfigurationStep next_step = 3;
+}
+
+enum ClusterPurpose {
+    CLUSTER_PURPOSE_UNSPECIFIED = 0;
+    CLUSTER_PURPOSE_MACHINE_LEARNING = 1;
+    CLUSTER_PURPOSE_SOFTWARE_DEVELOPMENT = 2;
+    CLUSTER_PURPOSE_DATA_PROCESSING = 3;
+    CLUSTER_PURPOSE_ARTEFITIAL_INTELIGNCE = 4;
+}
+
+enum CloudDistributionPolicy {
+    CLOUD_DISTRIBUTION_POLICY_UNSPECIFIED = 0;
+    CLOUD_DISTRIBUTION_POLICY_HYBRID = 1; // It could be a mix of hetzner, ionos and aws for example. The goal of it is prioritize vendor unlock.
+    CLOUD_DISTRIBUTION_POLICY_VENDOR_SPECIFIC = 2; // Specificly aws or gcp for example.
+    CLOUD_DISTRIBUTION_POLICY_LOCAL_VENDORS = 3; // for example germany specific vendors like hetzner and ionos.
+}
+
+enum ClusterScalability {
+    CLUSTER_SCALABILITY_UNSPECIFIED = 0;
+    CLUSTER_SCALABILITY_BASED_ON_LOAD = 1;
+    CLUSTER_SCALABILITY_BASED_ON_CONFIGURATION = 2;
+    CLUSTER_SCALABILITY_BASED_ON_BUDGET = 3;
+}
+
+enum TargetDeployment {
+    TARGET_DEPLOYMENT_UNSPECIFIED = 0;
+    TARGET_DEPLOYMENT_CLOUD_COMPUTING = 1;
+    TARGET_DEPLOYMENT_EDGE_COMPUTING = 2;
+    TARGET_DEPLOYMENT_USERS_DEVICES = 3;
+}
+
+enum ClusterEnvironmentSetup {
+    CLUSTER_ENVIRONMENT_SETUP_UNSPECIFIED = 0;
+    CLUSTER_ENVIRONMENT_SETUP_PRODUCTION = 1;
+    CLUSTER_ENVIRONMENT_SETUP_TESTING = 2;
+    CLUSTER_ENVIRONMENT_SETUP_DEVELOPMENT = 3;
+    CLUSTER_ENVIRONMENT_SETUP_PRE_PRODUCTION_STAGING = 4;
+    CLUSTER_ENVIRONMENT_SETUP_DEVELOPMENT_AND_TESTING = 5;
+}
+
+enum CloudCertificationPolicy {
+    CLOUD_CERTIFICATION_POLICY_UNSPECIFIED = 0;
+    CLOUD_CERTIFICATION_POLICY_NO_SPECIFIC_CERTIFICATE = 1;
+    CLOUD_CERTIFICATION_POLICY_HIPAA_CERTIFIED = 2;
+    CLOUD_CERTIFICATION_POLICY_FINANCIAL_CERTIFIED = 3;
+}
+
+enum ComplianceOffering {
+    COMPLIANCE_OFFERING_UNSPECIFIED = 0;
+    COMPLIANCE_OFFERING_GDPR = 1;
+    COMPLIANCE_OFFERING_CCPA = 2;
+}

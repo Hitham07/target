@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package proto.services.signin_service.v1;
+
+import "proto/common/user/v1/user.proto";
+
+message SignInInfo{
+  proto.common.user.v1.BasicIdentifier identifier = 1;
+  string password = 2; //encrypted
+}
+
+// SignUpRequest receives encrypted values of email, password, and csrf_token
+message SignInRequest {
+  SignInInfo signin_info = 1;
+  string csrf_token = 2;
+}
+
+// new_csrf_token is returned in header
+message SignInResponse {
+  string client_jwt = 1;
+}
+
+message SignInOTPRequest {
+  string otp = 1; //encrypted
+  string csrf_token = 2;
+}
+
+message SignInOTPResponse {
+  string client_jwt = 1;
+}
+
+message ConnectedUser {
+  string user_id = 1;
+  string name = 2;
+  string identifier = 3; // sanitized identifier
+  string profile_image_uri = 4;
+}
+
+message SignInIdentifiersForDeviceRequest {
+  string fingerprint = 1;
+}
+
+message SignInIdentifiersForDeviceResponse {
+  repeated ConnectedUser connected_users = 1;
+}
+
+// SignInService is a service to handle sign in
+service SignInService {
+  // Retrieves the user's identifier and password to sign in
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: The identifier, password, or csrf_token is missing
+  //        - ALREADY_EXISTS -> 6: The identifier already exists
+  rpc SignIn(SignInRequest) returns (SignInResponse) {
+  }
+  // Retrieves the user's identifier and password to sign in
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: the otp or csrf_token is invalid
+  rpc SignInOTP(SignInOTPRequest) returns (SignInOTPResponse) {
+  }
+  // SignInIdentifiersForDevice retrieves the connected users for the device
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: the fingerprint is missing
+  rpc SignInIdentifiersForDevice(SignInIdentifiersForDeviceRequest) returns (SignInIdentifiersForDeviceResponse) {
+  }
+}

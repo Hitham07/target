@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package proto.services.data_source_service.v1;
+
+import "google/protobuf/empty.proto";
+import "proto/common/data_source/v1/data_source.proto";
+
+message CreateDataSourceRequest {
+    string name = 1;
+    string description = 4;
+    proto.common.data_source.v1.DataSourceType type = 6;
+    optional proto.common.data_source.v1.MongoDbDataSource mongodb_configuration = 7;
+    optional proto.common.data_source.v1.PostgresDataSource postgres_configuration = 8;
+    optional proto.common.data_source.v1.S3DataSource s3_configuration = 9;
+}
+
+message CreateDataSourceResponse {
+    proto.common.data_source.v1.DataSource data_source = 1;
+}
+
+message GetDataSourceRequest {
+    string data_source_id = 1;
+}
+
+message GetDataSourceResponse {
+    proto.common.data_source.v1.DataSource data_source = 1;
+}
+
+message ListDataSourcesRequest {
+    int64 page_number = 1;
+    int64 page_size = 2;
+}
+
+message ListDataSourcesResponse {
+    repeated proto.common.data_source.v1.DataSource data_sources = 1;
+}
+
+message DeleteDataSourceRequest {
+    string data_source_id = 1;
+}
+
+message UpdateDataSourceRequest {
+    string data_source_id = 1;
+    optional string name = 2;
+    optional string description = 3;
+    optional proto.common.data_source.v1.DataSourceType type = 4;
+    optional proto.common.data_source.v1.MongoDbDataSource mongodb_configuration = 5;
+    optional proto.common.data_source.v1.PostgresDataSource postgres_configuration = 6;
+    optional proto.common.data_source.v1.S3DataSource s3_configuration = 7;
+}
+
+message UpdateDataSourceResponse {
+    proto.common.data_source.v1.DataSource data_source = 1;
+}
+
+service DataSourceService {
+
+    // Creates a new data source
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - ALREADY_EXISTS -> 6: The data source name already exists
+    rpc CreateDataSource(CreateDataSourceRequest) returns (CreateDataSourceResponse);
+    
+    // Retrieves a data source
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The data source does not exist
+    rpc GetDataSource(GetDataSourceRequest) returns (GetDataSourceResponse);
+
+    // Lists data sources
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    rpc ListDataSources(ListDataSourcesRequest) returns (ListDataSourcesResponse);
+
+    // Deletes a data source
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The data source does not exist
+    rpc DeleteDataSource(DeleteDataSourceRequest) returns (google.protobuf.Empty);
+
+    // Updates a data source
+    //    Request Metadata:
+    //        - authorization: Bearer token for authentication
+    //        - x-fingerprint: The fingerprint of the user
+    //        - x-organization-id: The organization id
+    //    Response Metadata:
+    //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+    //    Possible gRPC errors:
+    //        - FAILED_PRECONDITION -> 9: The x-fingerprint or x-organization-id is missing
+    //        - INTERNAL -> 13: The something went wrong in the server side
+    //        - NOT_FOUND -> 5: The data source does not exist
+    rpc UpdateDataSource(UpdateDataSourceRequest) returns (UpdateDataSourceResponse);
+}

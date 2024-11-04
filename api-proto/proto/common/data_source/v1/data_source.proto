@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package proto.common.data_source.v1;
+
+import "google/protobuf/timestamp.proto";
+import "proto/common/external_vendor/aws/v1/instance_information.proto";
+
+message DataSource {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    DataSourceType type = 4;
+    string organization_id = 5;
+    optional MongoDbDataSource mongodb_configuration = 6;
+    optional PostgresDataSource postgres_configuration = 7;
+    optional S3DataSource s3_configuration = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+}
+
+enum DataSourceType {
+    DATA_SOURCE_TYPE_UNSPECIFIED = 0;
+    DATA_SOURCE_TYPE_MONGODB = 1;
+    DATA_SOURCE_TYPE_POSTGRES = 2;
+    DATA_SOURCE_TYPE_S3 = 3;
+}
+
+message MongoDbDataSource {
+    string connection_string = 1;
+}
+
+message PostgresDataSource {
+    string database_name = 1;
+    optional string username = 2;
+    optional string password = 3;
+    PostgresSslMode ssl_mode = 4;
+    bool replicated = 5;
+    repeated PostgresConnectionInformation connections_information = 6;
+}
+
+enum PostgresSslMode {
+    POSTGRES_SSL_MODE_UNSPECIFIED = 0;
+    POSTGRES_SSL_MODE_DISABLE = 1;
+    POSTGRES_SSL_MODE_ALLOW = 2;
+    POSTGRES_SSL_MODE_PREFER = 3;
+    POSTGRES_SSL_MODE_REQUIRE = 4;
+    POSTGRES_SSL_MODE_VERIFY_CA = 5;
+    POSTGRES_SSL_MODE_VERIFY_FULL = 6;
+}
+
+enum PostgresHostRole {
+    POSTGRES_HOST_ROLE_UNSPECIFIED = 0;
+    POSTGRES_HOST_ROLE_MASTER = 1;
+    POSTGRES_HOST_ROLE_REPLICA = 2;
+}
+
+message PostgresConnectionInformation {
+    string endpoint = 1;
+    uint64 port = 2;
+    PostgresHostRole host_role = 3;
+}
+
+message S3DataSource {
+    string bucket_name = 3;
+    proto.common.external_vendor.aws.v1.AwsRegionEnum region = 4;
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package proto.services.file_session_service.v1;
+
+message Session {
+  string id = 1;
+//  string user_id = 2; // todo: investigate to add or not cause the session could be public
+  string csrf_token = 3;
+  int64 expiry = 4; // Unix timestamp
+  FileType file_type = 5;
+  string user_fingerprint = 6;
+}
+
+message CreateSessionRequest {
+  FileType file_type = 1;
+}
+
+message CreateSessionResponse {
+  string csrf_token = 1;
+  int64 expiry = 2; // Unix timestamp
+}
+
+enum FileType {
+  FILE_TYPE_UNSPECIFIED = 0;
+  FILE_TYPE_IMAGE = 1;
+  FILE_TYPE_VIDEO = 2;
+  FILE_TYPE_AUDIO = 3;
+  FILE_TYPE_DOCUMENT = 4;
+  FILE_TYPE_PDF = 5;
+  FILE_TYPE_TEXT = 6;
+}
+
+service SessionService {
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+}

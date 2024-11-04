@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package proto.services.concourse_service.v1;
+
+import "google/protobuf/empty.proto";
+
+service PrivateConcourseService {
+    rpc MaintainAccessToken (google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc RunConcourseEventConsumer (google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc ManageProjects (google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc ManageClusters (google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc ManageDoneActions (google.protobuf.Empty) returns (google.protobuf.Empty);
+}

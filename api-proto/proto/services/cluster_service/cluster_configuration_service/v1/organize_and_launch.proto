@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package proto.services.cluster_configuration_service.v1;
+
+
+import "proto/common/session/v1/session.proto";
+
+message GetOrganizeAndLaunchPresetRequest {
+    string session_id = 1;
+}
+
+message GetOrganizeAndLaunchPresetResponse {
+    string configuration_name = 1;
+    ShutdownScheduleOption shutdown_schedule_option = 2;
+    optional string schedule_profile_id = 3;
+    optional ShutdownSchedule shutdown_schedule = 4;
+    optional string termination_routine_id = 5;
+}
+
+message SaveOrganizeAndLaunchSelectionsRequest {
+    string session_id = 1;
+    string csrf_token = 2;
+
+    string configuration_name = 3;
+    ShutdownScheduleOption shutdown_schedule_option = 4;
+    optional string shutdown_schedule_profile_id = 5;
+    optional ShutdownSchedule shutdown_schedule = 6;
+    optional string termination_routine_id = 7;
+}
+
+message SaveOrganizeAndLaunchSelectionsResponse {
+    proto.common.session.v1.ConfigurationStep next_step = 1;
+}
+
+enum ShutdownScheduleOption {
+    SHUTDOWN_SCHEDULE_OPTION_UNSPECIFIED = 0;
+    SHUTDOWN_SCHEDULE_OPTION_WEEK_ENDS = 1; // This option will be based on the week ends for every region (MENA or Not).
+    SHUTDOWN_SCHEDULE_OPTION_SPECIFIC_SCHEDULE = 2;
+    SHUTDOWN_SCHEDULE_OPTION_SCHEDULE_PROFILE = 3;
+}
+
+message ShutdownSchedule {
+    repeated DateRange date_ranges = 1;
+}
+
+message DateRange {
+    string start = 1; // Format in ISO UTC date time -> 2006-01-02T15:04:05.000Z
+    string end = 2; // Format in ISO UTC date time -> 2006-01-02T15:04:05.000Z
+}

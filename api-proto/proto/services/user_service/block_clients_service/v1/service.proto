@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package proto.services.block_clients_service.v1;
+
+enum BlockReasonType {
+  BLOCK_REASON_TYPE_CLIENT_FINGERPRINT_UNSPECIFIED = 0;
+  BLOCK_REASON_TYPE_IP_ADDRESS = 1;
+  BLOCK_REASON_TYPE_ACCESS_KEY = 2;
+}
+
+enum PlatformType {
+  PLATFORM_TYPE_SDK_UNSPECIFIED = 0;
+  PLATFORM_TYPE_MOBILE = 1;
+  PLATFORM_TYPE_WEB = 2;
+  PLATFORM_TYPE_CLI = 3;
+}
+
+message BlockInfo {
+  BlockReasonType reason_type = 1;
+  string value = 2;
+  PlatformType platform_type = 3;
+}
+
+
+message BlockClientRequest {
+  BlockReasonType reason_type = 1;
+  string value = 2;
+  PlatformType platform_type = 3;
+}
+
+message BlockClientResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message UnblockClientRequest {
+  BlockReasonType reason_type = 1;
+  string value = 2;
+  PlatformType platform_type = 3;
+}
+
+message UnblockClientResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+service BlockClientsService {
+  // @kuberex: Authenticated,Authorized {admin_role, org_admin}
+  rpc BlockClient(BlockClientRequest) returns (BlockClientResponse) {
+  }
+
+  rpc UnblockClient(UnblockClientRequest) returns (UnblockClientResponse) {
+  }
+}

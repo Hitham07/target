@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package proto.services.account_service.v1;
+
+import "proto/common/user/v1/user.proto";
+
+message GetUserInformationRequest {
+}
+message GetUserInformationResponse {
+  proto.common.user.v1.UserInformation user_information = 1;
+}
+message UpdateUserInformationRequest {
+  proto.common.user.v1.UserInformation user_information = 1;
+}
+message UpdateUserInformationResponse {
+}
+
+message GetUserProfessionRequest {
+}
+message GetUserProfessionResponse {
+  proto.common.user.v1.ProfessionalDetails professional_details = 1;
+}
+message UpdateUserProfessionRequest {
+  proto.common.user.v1.ProfessionalDetails professional_details = 1;
+}
+message UpdateUserProfessionResponse {
+}
+
+service AccountService {
+  // GetUserInformation User Information
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetUserInformation(GetUserInformationRequest) returns (GetUserInformationResponse);
+  // UpdateUserInformation User Information
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  //      - INVALID_ARGUMENT -> 3: The user provided invalid data
+  rpc UpdateUserInformation(UpdateUserInformationRequest) returns (UpdateUserInformationResponse);
+
+  // GetUserProfession User Profession
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  rpc GetUserProfession(GetUserProfessionRequest) returns (GetUserProfessionResponse);
+  // UpdateUserProfession User Profession
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //        - authorization: The JWT token of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //    Possible gRPC errors:
+  //       - INTERNAL -> 13: The something went wrong in the server side
+  //      - INVALID_ARGUMENT -> 3: The user provided invalid data
+  rpc UpdateUserProfession(UpdateUserProfessionRequest) returns (UpdateUserProfessionResponse);
+}

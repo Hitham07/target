@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package proto.services.signup_service.v1;
+
+//import "google/api/annotations.proto";
+import "proto/common/user/v1/user.proto";
+
+
+message UserProfile {
+  proto.common.user.v1.BasicIdentifier identifier = 1;
+  string first_name = 2;
+  string last_name = 3;
+  proto.common.user.v1.Title title = 4;
+  string country = 5;
+  proto.common.user.v1.UserSecurityCredentials credentials = 6;
+}
+
+// SignUpRequest receives encrypted values of email, password, and csrf_token
+message SignUpRequest {
+  UserProfile signup_info = 1;
+  string csrf_token = 2;
+  bool agreed_to_terms = 3;
+}
+
+// new_csrf_token is returned in header
+message SignUpResponse {
+  string client_jwt = 1;
+}
+
+service SignUpService {
+  // Retrieves the user's email and password to sign up
+  //    Request Metadata:
+  //        - x-fingerprint: The fingerprint of the user
+  //    Response Metadata:
+  //        - x-http-code: The HTTP status code that is equivalent to the gRPC status code
+  //        - x-csrf-token: The CSRF token to be used in the next request
+  //    Possible gRPC errors:
+  //        - FAILED_PRECONDITION -> 9: The x-fingerprint is missing
+  //        - INTERNAL -> 13: The something went wrong in the server side
+  //        - INVALID_ARGUMENT -> 3: The identifier, first_name, last_name, title, country, are invalid
+  //        - ALREADY_EXISTS -> 6: The identifier already exists
+  rpc SignUp(SignUpRequest) returns (SignUpResponse) {
+  }
+}

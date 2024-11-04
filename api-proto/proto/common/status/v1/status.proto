@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+package proto.common.status.v1;
+
+enum SesStatus {
+  SES_STATUS_UNKNOWN_UNSPECIFIED = 0;
+
+  SES_STATUS_PERMANENT_GENERAL = 1;
+  SES_STATUS_PERMANENT_NO_EMAIL = 2;
+  SES_STATUS_PERMANENT_SUPPRESSED = 3;
+  SES_STATUS_PERMANENT_ON_ACCOUNT_SUPPRESSION_LIST = 4;
+
+  SES_STATUS_TRANSIENT_MAILBOX_FULL = 5;
+  SES_STATUS_TRANSIENT_MESSAGE_TOO_LARGE = 6;
+  SES_STATUS_TRANSIENT_CONTENT_REJECTED = 7;
+  SES_STATUS_TRANSIENT_ATTACHMENT_REJECTED = 8;
+
+  SES_STATUS_COMPLAINT_ABUSE = 9;
+  SES_STATUS_COMPLAINT_AUTH_FAILURE = 10;
+  SES_STATUS_COMPLAINT_FRAUD = 11;
+  SES_STATUS_COMPLAINT_NOT_SPAM = 12;
+  SES_STATUS_COMPLAINT_OTHER = 13;
+  SES_STATUS_COMPLAINT_VIRUS = 14;
+
+  SES_STATUS_SUCCESS_DELIVERED = 15;
+  SES_STATUS_SUCCESS_SEND = 16;
+  SES_STATUS_SUCCESS_OPENED = 17;
+}
+
+message SesStatusDetails {
+  SesStatus status = 1;
+  Message message = 2;
+}
+
+//  "Message" : "{\"eventType\":\"Bounce\",\"bounce\":{\"feedbackId\":\"010701927b27016a-6d51ea9e-d47d-466b-9c31-e186e8fea607-000000\",\"bounceType\":\"Permanent\",\"bounceSubType\":\"General\",\"bouncedRecipients\":[{\"emailAddress\":\"bounce@simulator.amazonses.com\",\"action\":\"failed\",\"status\":\"5.1.1\",\"diagnosticCode\":\"smtp; 550 5.1.1 user unknown\"}],\"timestamp\":\"2024-10-11T10:36:46.922Z\",\"remoteMtaIp\":\"52.208.185.27\",\"reportingMTA\":\"dns; b224-11.smtp-out.eu-central-1.amazonses.com\"},\"mail\":{\"timestamp\":\"2024-10-11T10:36:46.362Z\",\"source\":\"Kuberex <welcome@kuberex.io>\",\"sourceArn\":\"arn:aws:ses:eu-central-1:333828806273:identity/kuberex.io\",\"sendingAccountId\":\"333828806273\",\"messageId\":\"010701927b26ff9a-d893f90c-99c4-4901-a565-5ae4aa072675-000000\",\"destination\":[\"bounce@simulator.amazonses.com\"],\"headersTruncated\":false,\"headers\":[{\"name\":\"From\",\"value\":\"Kuberex <welcome@kuberex.io>\"},{\"name\":\"To\",\"value\":\"bounce@simulator.amazonses.com\"},{\"name\":\"Subject\",\"value\":\"Welcome to Kuberex\"},{\"name\":\"MIME-Version\",\"value\":\"1.0\"},{\"name\":\"Content-Type\",\"value\":\"multipart/mixed; boundary=\\\"cb255009d121b297560e615a8710579d7ba1b03516ba9f56acecc301dda6\\\"\"}],\"commonHeaders\":{\"from\":[\"Kuberex <welcome@kuberex.io>\"],\"to\":[\"bounce@simulator.amazonses.com\"],\"messageId\":\"010701927b26ff9a-d893f90c-99c4-4901-a565-5ae4aa072675-000000\",\"subject\":\"Welcome to Kuberex\"},\"tags\":{\"ses:source-tls-version\":[\"TLSv1.3\"],\"ses:operation\":[\"SendRawEmail\"],\"ses:configuration-set\":[\"config-set\"],\"ses:source-ip\":[\"41.237.70.87\"],\"ses:from-domain\":[\"kuberex.io\"],\"traceparent\":[\"00-c9b2b0e48bc0f675226a423a80d9a37a-81f973e00d1ef493-01\"],\"ses:caller-identity\":[\"mario\"]}}}\n",
+message Bounce {
+  string bounce_type = 1;
+  string bounce_sub_type = 2;
+  repeated BouncedRecipient bounced_recipients = 3;
+  string timestamp = 4;
+  string feedback_id = 5;
+  string remote_mta_ip = 6 [json_name = "remoteMtaIp"];
+  string reporting_mta = 7 [json_name = "reportingMTA"];
+}
+
+message BouncedRecipient {
+  string email_address = 1;
+  string action = 2;
+  string status = 3;
+  string diagnostic_code = 4;
+}
+
+message Mail {
+  string timestamp = 1;
+  string source = 2;
+  string message_id = 3;
+  repeated string destination = 4;
+  Tag tags = 5;
+  string sending_account_id = 7;
+  string source_arn = 8;
+  bool headers_truncated = 9;
+  repeated Header headers = 10;
+  CommonHeaders common_headers = 11;
+}
+message MailTag {
+  string key = 1;
+  repeated string values = 2;
+}
+message TagValue {
+  repeated string value = 1;
+}
+
+message Header {
+  string name = 1;
+  string value = 2;
+}
+
+message CommonHeaders {
+  repeated string from = 1;
+  repeated string to = 2;
+  string message_id = 3;
+  string subject = 4;
+}
+
+message Tag {
+  // Trace context
+  repeated string trace_parent = 1 [json_name = "traceparent"];
+  repeated string request_id = 17 [json_name = "request_id"];
+
+  // SES-related fields
+  repeated string ses_source_tls_version = 2 [json_name = "ses:source-tls-version"];
+  repeated string ses_operation = 3 [json_name = "ses:operation"];
+  repeated string ses_configuration_set = 4 [json_name = "ses:configuration-set"];
+  repeated string ses_source_ip = 5 [json_name = "ses:source-ip"];
+  repeated string ses_from_domain = 6 [json_name = "ses:from-domain"];
+  repeated string ses_caller_identity = 7 [json_name = "ses:caller-identity"];
+  repeated string ses_message_id = 8 [json_name = "ses:message-id"];
+  repeated string ses_destination = 9 [json_name = "ses:destination"];
+  repeated string ses_outgoing_ip = 10 [json_name = "ses:outgoing-ip"];
+  repeated string ses_outgoing_tls_version = 12 [json_name = "ses:outgoing-tls-version"];
+  repeated string ses_feedback_id = 13 [json_name = "ses:feedback-id"];
+  repeated string ses_feedback_id_a = 14 [json_name = "ses:feedback-id-a"];
+  repeated string ses_feedback_id_b = 15 [json_name = "ses:feedback-id-b"];
+
+  // Open section for email open events
+  Open open = 16;
+}
+
+message Delivery {
+  string timestamp = 1;
+  int32 processing_time_millis = 2;
+  repeated string recipients = 3;
+  string smtp_response = 4;
+  string reporting_mta = 5 [json_name = "reportingMTA"];
+  string remote_mta_ip = 6 [json_name = "remoteMtaIp"];
+}
+
+message Complaint {
+  string feedback_id = 1;
+  string complaint_sub_type = 2;
+  repeated ComplainedRecipient complained_recipients = 3;
+  string timestamp = 4;
+  string user_agent = 5;
+  string complaint_feedback_type = 6;
+  string arrival_date = 7;
+}
+
+message ComplainedRecipient {
+  string email_address = 1;
+}
+
+message Message {
+  string event_type = 1 [json_name = "eventType"];
+  Mail mail = 2;
+  Bounce bounce = 3;
+  Complaint complaint = 5;
+  Delivery delivery = 4;
+  DeliveryDelay delivery_delay = 6;
+  Send send = 7;
+  Open open = 8;
+  Reject reject = 9;
+  Click click = 10;
+  Subscription subscription = 11;
+}
+
+message Send {
+}
+message Open {
+  string timestamp = 1;
+  string user_agent = 2;
+  string ip_address = 3;
+}
+
+message Reject {
+  string reason = 1;
+}
+
+message Click {
+  string timestamp = 1;
+  string user_agent = 2;
+  string ip_address = 3;
+  string link = 4;
+  repeated string link_tags = 5;
+}
+
+message DeliveryDelay {
+  string timestamp = 1;
+  string delay_type = 2;
+  string expiration_time = 3;
+  repeated DelayedRecipient delayed_recipients = 4;
+  string reporting_mta = 5 [json_name = "reportingMTA"];
+  string remote_mta_ip = 6 [json_name = "remoteMtaIp"];
+}
+
+message DelayedRecipient {
+  string email_address = 1;
+  string status = 2;
+  string diagnostic_code = 3;
+}
+
+message Subscription {
+  string contact_list = 1;
+  string timestamp = 2;
+  string source = 3;
+  TopicPreferences new_topic_preferences = 4 [json_name = "newTopicPreferences"];
+  TopicPreferences old_topic_preferences = 5 [json_name = "oldTopicPreferences"];
+}
+
+message TopicPreferences {
+  bool unsubscribe_all = 1;
+  repeated TopicSubscriptionStatus topic_subscription_status = 2 [json_name = "topicSubscriptionStatus"];
+  repeated TopicSubscriptionStatus topic_default_subscription_status = 3 [json_name = "topicDefaultSubscriptionStatus"];
+}
+
+message TopicSubscriptionStatus {
+  string topic_name = 1;
+  string subscription_status = 2;
+}

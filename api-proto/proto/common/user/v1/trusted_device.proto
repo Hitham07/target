@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "proto/common/user/v1/user.proto";
+
+
+message TrustedConnectedDevices {
+  string fingerprint = 2;
+  string user_id = 3;
+  string device_id = 4;
+  proto.common.user.v1.BasicIdentifier identifier = 5; // connected user identifier
+  int64 last_activated = 6;
+  repeated string active_sessions_id = 7;
+}

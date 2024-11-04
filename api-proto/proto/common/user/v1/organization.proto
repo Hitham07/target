@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package proto.common.user.v1;
+
+import "proto/common/user/v1/user.proto";
+import "google/protobuf/timestamp.proto";
+
+message Organization {
+  string public_id = 1;
+  string name = 2;
+  string description = 3;
+  string icon_id = 4;
+  repeated Space spaces = 5;
+  repeated Administration admins = 6;
+  repeated Membership members = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+message Administration {
+  string user_id = 1;
+  Identifier identifier = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message Membership {
+  string user_id = 1;
+  MembershipStatus status = 2;
+  google.protobuf.Timestamp joined_at = 3;
+}
+
+enum MembershipStatus {
+  MEMBERSHIP_STATUS_UNSPECIFIED = 0;
+  MEMBERSHIP_STATUS_ACTIVE = 1;
+  MEMBERSHIP_STATUS_PENDING = 2;
+  MEMBERSHIP_STATUS_SUSPENDED = 3;
+}
+
+message Space {
+  string public_id = 1;
+  string name = 2;
+  string description = 3;
+  string icon_id = 4;
+  string color_theme = 5;
+  repeated Project projects = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+message Project {
+  string public_id = 1;
+  string name = 2;
+  string description = 3;
+  string repo_url = 4;
+  repeated ProjectPermission permission = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message ProjectPermission {
+  string user_id = 1;
+  ProjectRole role = 2;
+  repeated ProjectAction actions = 3;
+}
+
+enum ProjectRole {
+  PROJECT_ROLE_ROLE_UNSPECIFIED = 0;
+  PROJECT_ROLE_OWNER = 1;
+  PROJECT_ROLE_ADMIN = 2;
+  PROJECT_ROLE_CONTRIBUTOR = 3;
+  PROJECT_ROLE_VIEWER = 4;
+}
+
+enum ProjectAction {
+  PROJECT_ACTION_UNSPECIFIED = 0;
+  PROJECT_ACTION_CREATE = 1;
+  PROJECT_ACTION_READ = 2;
+  PROJECT_ACTION_UPDATE = 3;
+  PROJECT_ACTION_DELETE = 4;
+  PROJECT_ACTION_MANAGE_PERMISSIONS = 5;
+}
