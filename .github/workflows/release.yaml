@@ -8,7 +8,9 @@ on:
   push:
     branches:
       - main
-      
+    paths:
+      - .github/**  # Watch all files in this directory
+
 jobs:
   get-github-release:
     name: get-github-release
